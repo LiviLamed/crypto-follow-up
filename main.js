@@ -18,26 +18,25 @@ let coinsToDisplay = []
 const searchInput = document.getElementById("search-bar")
 
 
-searchInput.addEventListener("input", (e)=>{
-    const searchValue = e.target.value.toLowerCase();
+searchInput.addEventListener("input", (e) => {
+    const searchValue = e.target.value;
 
     if (searchValue) {
-        coinsToDisplay = allCoins.filter((coin)=> {
-            return coin.id.toLowerCase().includes(searchValue) || coin.name.toLowerCase().includes(searchValue) || coin.symbol.toLowerCase().includes(searchValue)              
-         }) 
+        coinsToDisplay = allCoins.filter((coin) => {
+            return coin.name.toLowerCase().includes(searchValue.toLowerCase()) || coin.symbol.toLowerCase().includes(searchValue.toLowerCase())
+        })
     } else {
         coinsToDisplay = allCoins
     }
 
-    console.log(coinsToDisplay)
     displayCoins()
 
 })
 
 
 
-async function init(){
-    console.log("Lyle is handsome")
+async function init() {
+    console.log("Lyle is")
     const coins = await getCoins()
     allCoins = coins;
     coinsToDisplay = allCoins;
@@ -66,7 +65,7 @@ function dynamicNavBar() {
     function displayReports() {
         currenciesMainContent.style.display = 'none'
         reportsMainContent.style.display = 'block'
-        aboutMainContent.style.display = 'none'    
+        aboutMainContent.style.display = 'none'
     }
 
     function displayAbout() {
@@ -99,7 +98,7 @@ async function getCoinInfo(coinId) {
     const response = await fetch(url)
     const coinInfo = await response.json()
     console.log(coinInfo)
-     
+
     const coinPriceUsd = coinInfo.market_data.current_price.usd;
     const coinPriceIls = coinInfo.market_data.current_price.ils;
     const coinPriceEur = coinInfo.market_data.current_price.eur;
@@ -107,7 +106,7 @@ async function getCoinInfo(coinId) {
     const coinPriceContainerUsd = document.getElementById(`coin-usd-price-${coinId}`)
     const coinPriceContainerIls = document.getElementById(`coin-ils-price-${coinId}`)
     const coinPriceContainerEur = document.getElementById(`coin-eur-price-${coinId}`)
-   
+
     coinPriceContainerUsd.innerHTML = coinPriceUsd.toFixed(2);
     coinPriceContainerIls.innerHTML = coinPriceIls.toFixed(2);
     coinPriceContainerEur.innerHTML = coinPriceEur.toFixed(2);
@@ -117,15 +116,16 @@ async function getCoinInfo(coinId) {
 
 async function displayCoins() {
     const coins = coinsToDisplay;
-    console.log(coins)
-    
-    let html = ''
+    if (coinsToDisplay.length === 0) {
+        cardsContainer.innerHTML = '<p id="no-results-message">No Results...</p>'
+    } else {
+        let html = ''
 
-    for (const coin of coins) {
+        for (const coin of coins) {
 
 
-        html += `
-        <div class="col-lg-2 col-md-3 col-sm-6 col-12">   
+            html += `
+            <div class="col-lg-2 col-md-3 col-sm-6 col-12">   
             <div class="card">
                 <img src="${coin.image}" class="card-img-top coin-card-image" alt="${coin.image}">
                 <div class="form-check form-switch">
@@ -166,8 +166,11 @@ async function displayCoins() {
             </div>
         </div>        
         `
+        }
+        cardsContainer.innerHTML = html;
+
     }
-    cardsContainer.innerHTML = html;
+
 
 }
 
