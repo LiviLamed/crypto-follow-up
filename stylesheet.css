@@ -1,0 +1,34 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: "Architects Daughter", "Rubik", "sans-serif";
+    /* background-image: url("/assets/images/gray-bg-2.jpg"); */
+    background-position: center;
+    background-size: cover;
+    background-repeat: repeat;
+    box-sizing: border-box;
+}
+
+
+
+.card {
+    margin: 4px;
+}
+
+.card img{
+    height: 50px;
+    width: 50px
+}
+
+.currencies-main-content {
+    display: block;
+}
+
+.reports-main-content{
+    display: none;
+
+}
+.about-main-content{
+    display: none;
+
+}
