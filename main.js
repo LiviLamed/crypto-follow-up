@@ -37,6 +37,7 @@ searchInput.addEventListener("input", (e)=>{
 
 
 async function init(){
+    console.log("Lyle is handsome")
     const coins = await getCoins()
     allCoins = coins;
     coinsToDisplay = allCoins;
