@@ -18,6 +18,8 @@
     defer></script>
   <title>Livi's Crypto Webpage</title>
   <link rel="stylesheet" href="stylesheet.css">
+  <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous" defer></script>
+  <script src="https://cdn.canvasjs.com/canvasjs.min.js" defer></script>
   <script src="main.js" defer></script>
 </head>
 
@@ -34,54 +36,94 @@
     <label for="search">Search</label>
     <input type="search" id="search-bar" data-search-input>
   </header>
+    
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#follow-coins-limitation-dialog" onclick="displayChosenCoinsInDialog()">
+    Launch demo modal
+  </button>
+  
   <div id="main-content" class="page-main-content">
     <div id="currencies-main-content" class="container text-center currencies-main-content">
       <div id="cards-container" class="row"></div>
     </div>
-    <div id="reports-main-content" class="container reports-main-content"></div>
+
+    
+    <div id="reports-main-content" class="container reports-main-content">
+      <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    </div>
+
+
     <div id="about-main-content" class="container about-main-content"></div>
   </div>
-  <!-- <div id="test">
-        <div class="card" style="width: 18rem;">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-            </div>
-            
-            <div class="card-body">
-              <h5 class="card-title">Bitcoin</h5>
-             
-              <p>
-                
-                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                  More Info
-                </button>
-              </p>
-              <div class="collapse" id="collapseExample">
-                <div class="card card-body">
-                  <table>
-                    <thead >
-                        <th id="card-info-dollar" class="table-primary">$</th>
-                        <th id="card-info-euro">€</th>
-                        <th id="card-info-shekel">₪</th>
-                    </thead>
+
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="coins-limitation-dialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">          You may only follow live changes for five Currencies. Please choose the five you wish to see
+          </h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body " id="modal-body">
+          <div id="modal-cards-container" class="row">
+            <div class="col-lg-2 col-md-3 col-sm-6 col-12">   
+                <div class="card">
+                    <img src="${coin.image}" class="card-img-top coin-card-image" alt="${coin.image}">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input follow-coin-in-report-switch" type="checkbox" onclick="canFollowCoinInReport()" role="switch" id="switch-${coin.id}" name="${coin.id}">
+                    </div>
+                    <div class="card-body">
+                    <h5 class="card-title">Btn</h5>
+                    <h6 class="card-title">Bitcoin</h6>
                     
-                    <tbody>
-                        <tr table-primary>
-                            <td class="">10</td>
-                            <td>3</td>
-                            <td>4</td>
-                           
-                        </tr>
+                    <p>
+                        <button onclick="getCoinInfo('${coin.id}')" class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#coin-collapse-${coin.id}" aria-expanded="false" aria-controls="collapseExample">
+                        More Info
+                        </button>
+                    </p>
+                    <div class="collapse" id="coin-collapse-${coin.id}">
+                    
+                        <div class="card card-body">
+                        <table>
+                            
+                            
+                            <tbody>
+                                <tr table-primary>
+                                    <th id="card-info-dollar" class="table-primary">$</th>
+                                    <td id="coin-usd-price-${coin.id}"></td>
 
-                    </tbody>
+                                </tr>
 
-                  </table>
+                                <tr table-primary>
+                                    <th id="card-info-shekel">₪</th>
+                                    <td id="coin-ils-price-${coin.id}"></td>
+                                </tr>
+
+                                <tr table-primary>
+                                    <th id="card-info-euro">€</th>
+                                    <td id="coin-eur-price-${coin.id}"></td>                         
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
             </div>
-          </div>
-    </div> -->
+          
+          </div> 
+        </div> 
+      </div>
+    </div>
+</div>
+<!-- report -->
+  
+
+  
 </body>
 
 </html>

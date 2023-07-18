@@ -7,7 +7,12 @@ const currenciesMainContent = document.getElementById("currencies-main-content")
 const reportsMainContent = document.getElementById("reports-main-content")
 const aboutMainContent = document.getElementById("about-main-content")
 const cardsContainer = document.getElementById('cards-container');
+const searchInput = document.getElementById("search-bar")
+const allSwitchButtons = document.getElementsByClassName('follow-coin-in-report-switch')
 
+
+// const modal = new bootstrap.modal('coins-limitation-dialog');
+// modal.show()
 
 init()
 
@@ -15,7 +20,7 @@ let allCoins = []
 let coinsToDisplay = []
 
 
-const searchInput = document.getElementById("search-bar")
+
 
 
 searchInput.addEventListener("input", (e) => {
@@ -36,14 +41,15 @@ searchInput.addEventListener("input", (e) => {
 
 
 async function init() {
-    console.log("Lyle is")
     const coins = await getCoins()
     allCoins = coins;
     coinsToDisplay = allCoins;
     dynamicNavBar()
     displayCoins()
-
-
+    
+    chosenCoins = allCoins.splice(0, 5)
+    console.log(chosenCoins)
+    displayGraph()
 }
 
 
@@ -86,18 +92,19 @@ async function getCoins() {
     // changed to 50 coins in the query parameter
     url.searchParams.append('per_page', '50')
     url.searchParams.append('page', '1')
-
+    console.log(url)
     const response = await fetch(url);
     const coins = await response.json();
     return coins;
 }
 
+
 async function getCoinInfo(coinId) {
-    console.log(coinId)
+   
     const url = new URL(`https://api.coingecko.com/api/v3/coins/${coinId}`)
     const response = await fetch(url)
     const coinInfo = await response.json()
-    console.log(coinInfo)
+  
 
     const coinPriceUsd = coinInfo.market_data.current_price.usd;
     const coinPriceIls = coinInfo.market_data.current_price.ils;
@@ -129,7 +136,7 @@ async function displayCoins() {
             <div class="card">
                 <img src="${coin.image}" class="card-img-top coin-card-image" alt="${coin.image}">
                 <div class="form-check form-switch">
-                    <input class="form-check-input follow-coin-in-report-switch" type="checkbox" onclick="canFollowCoinInReport()" role="switch" id="flexSwitchCheckDefault">
+                    <input class="form-check-input follow-coin-in-report-switch" type="checkbox" onclick="updateChosenCoins()" role="switch" id="${coin.id}" name="${coin.id}">
                 </div>
                 <div class="card-body">
                 <h5 class="card-title">${coin.symbol}</h5>
@@ -144,19 +151,24 @@ async function displayCoins() {
                 
                     <div class="card card-body">
                     <table>
-                        <thead >
-                            <th id="card-info-dollar" class="table-primary">$</th>
-                            <th id="card-info-shekel">₪</th>
-                            <th id="card-info-euro">€</th>
-                        </thead>
+                        
                         
                         <tbody>
                             <tr table-primary>
-                                <td id="coin-usd-price-${coin.id}"></td>
-                                <td id="coin-ils-price-${coin.id}"></td>
-                                <td id="coin-eur-price-${coin.id}"></td>                         
+                                 <th id="card-info-dollar" class="table-primary">$</th>
+                                 <td id="coin-usd-price-${coin.id}"></td>
+
                             </tr>
 
+                            <tr table-primary>
+                                <th id="card-info-shekel">₪</th>
+                                <td id="coin-ils-price-${coin.id}"></td>
+                            </tr>
+
+                            <tr table-primary>
+                                <th id="card-info-euro">€</th>
+                                <td id="coin-eur-price-${coin.id}"></td>                         
+                             </tr>
                         </tbody>
 
                     </table>
@@ -174,25 +186,175 @@ async function displayCoins() {
 
 }
 
+// function getFollowedInReportCoins() {
 
-function canFollowCoinInReport() {
-    console.log('switch changed')
-    const allSwitchButtons = document.getElementsByClassName('follow-coin-in-report-switch')
+//     const chosenCoins = allCoins.filter(coin => {
+
+//     })
+// }
+
+
+
+let chosenCoins = []
+
+
+
+function updateChosenCoins() {
+    const chosenCoinsIds = []
+        
+   
+
     let numberOfOnSwitches = 0
-
-
     for (const switchButton of allSwitchButtons) {
+        const coinId = switchButton.id
+
         if (switchButton.checked) {
+            chosenCoinsIds.push(coinId)
             numberOfOnSwitches++
             if (numberOfOnSwitches > 5) {
-                console.log("you have 6 now")
+                showDialog()
+                
                 return false;
             }
-        }
-    }
+        } 
+    } 
+
+    chosenCoins = allCoins.filter((coin) => {
+        return chosenCoinsIds.find((id)=> {
+            return coin.id === id
+        })
+    })
+
+
+    console.log(chosenCoins)
+    displayGraph()
+
     return true
 
 }
 
-canFollowCoinInReport()
+
+function showDialog() {
+    const myModal = document.getElementById('coins-limitation-dialog')
+    const myInput = document.getElementById('myInput')
+
+    myModal.modal('show')
+}
+
+
+
+   
+ function displayGraph() {
+
+     var chart = new CanvasJS.Chart("chartContainer", {
+	animationEnabled: true,
+	title:{
+		text: "Live - Livi's Crypto Report"
+         },
+	axisX: {
+		valueFormatString: "YYYY/MM/DD"
+	},
+	axisY: {
+		title: "Value For USD",
+		suffix: "$"
+	},
+	legend:{
+		cursor: "pointer",
+		fontSize: 16,
+		itemclick: toggleDataSeries
+	},
+	toolTip:{
+		shared: true
+	},
+	data: [{
+		name: chosenCoins[0].name,
+		type: "spline",
+		yValueFormatString: "######.## ",
+		showInLegend: true,
+		dataPoints: [
+			{ x: new Date(2017,6,24), y: 31 },
+			{ x: new Date(2017,6,25), y: 31 },
+			{ x: new Date(2017,6,26), y: 29 },
+			{ x: new Date(2017,6,27), y: 29 },
+			{ x: new Date(2017,6,28), y: 31 },
+			{ x: new Date(2017,6,29), y: 30 },
+			{ x: new Date(2017,6,30), y: 29 }
+		]
+	},
+           {
+		name: chosenCoins[1].name,
+		type: "spline",
+		yValueFormatString: "######.## ",
+		showInLegend: true,
+		dataPoints: [
+			{ x: new Date(2017,6,24), y: 10 },
+			{ x: new Date(2017,6,25), y: 31 },
+			{ x: new Date(2017,6,26), y: 29 },
+			{ x: new Date(2017,6,27), y: 20 },
+			{ x: new Date(2017,6,28), y: 31 },
+			{ x: new Date(2017,6,29), y: 30 },
+			{ x: new Date(2017,6,30), y: 29 }
+		]
+	},
+	{
+		name: chosenCoins[2].name,
+		type: "spline",
+		yValueFormatString: "#0.## °C",
+		showInLegend: true,
+		dataPoints: [
+			{ x: new Date(2017,6,24), y: 20 },
+			{ x: new Date(2017,6,25), y: 20 },
+			{ x: new Date(2017,6,26), y: 25 },
+			{ x: new Date(2017,6,27), y: 25 },
+			{ x: new Date(2017,6,28), y: 25 },
+			{ x: new Date(2017,6,29), y: 25 },
+			{ x: new Date(2017,6,30), y: 25 }
+		]
+	},
+           {
+		name: chosenCoins[3].name,
+		type: "spline",
+		yValueFormatString: "######.## ",
+		showInLegend: true,
+		dataPoints: [
+			{ x: new Date(2017,6,24), y: 31 },
+			{ x: new Date(2017,6,25), y: 50 },
+			{ x: new Date(2017,6,26), y: 29 },
+			{ x: new Date(2017,6,27), y: 33 },
+			{ x: new Date(2017,6,28), y: 31 },
+			{ x: new Date(2017,6,29), y: 21 },
+			{ x: new Date(2017,6,30), y: 29 }
+		]
+	},
+	{
+		name: chosenCoins[4].name,
+		type: "spline",
+		yValueFormatString: "#0.## °C",
+		showInLegend: true,
+		dataPoints: [
+			{ x: new Date(2017,6,24), y: 22 },
+			{ x: new Date(2017,6,25), y: 19 },
+			{ x: new Date(2017,6,26), y: 23 },
+			{ x: new Date(2017,6,27), y: 24 },
+			{ x: new Date(2017,6,28), y: 24 },
+			{ x: new Date(2017,6,29), y: 23 },
+			{ x: new Date(2017,6,30), y: 23 }
+		]
+	}]
+});
+chart.render();
+
+function toggleDataSeries(e){
+	if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+		e.dataSeries.visible = false;
+	}
+	else{
+		e.dataSeries.visible = true;
+	}
+	chart.render();
+}
+
+}
+
+
 
