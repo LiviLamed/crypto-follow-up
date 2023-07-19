@@ -13,12 +13,13 @@
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous" defer></script>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"
     defer></script>
   <title>Livi's Crypto Webpage</title>
   <link rel="stylesheet" href="stylesheet.css">
-  <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous" defer></script>
   <script src="https://cdn.canvasjs.com/canvasjs.min.js" defer></script>
   <script src="main.js" defer></script>
 </head>
@@ -37,7 +38,7 @@
     <input type="search" id="search-bar" data-search-input>
   </header>
     
-  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#follow-coins-limitation-dialog" onclick="displayChosenCoinsInDialog()">
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#coins-limitation-dialog">
     Launch demo modal
   </button>
   
@@ -46,7 +47,7 @@
       <div id="cards-container" class="row"></div>
     </div>
 
-    
+
     <div id="reports-main-content" class="container reports-main-content">
       <div id="chartContainer" style="height: 370px; width: 100%;"></div>
     </div>
@@ -58,7 +59,7 @@
 
   
   <!-- Modal -->
-  <div class="modal fade" id="coins-limitation-dialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="coins-limitation-dialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">

@@ -9,10 +9,12 @@ const aboutMainContent = document.getElementById("about-main-content")
 const cardsContainer = document.getElementById('cards-container');
 const searchInput = document.getElementById("search-bar")
 const allSwitchButtons = document.getElementsByClassName('follow-coin-in-report-switch')
-
-
-// const modal = new bootstrap.modal('coins-limitation-dialog');
-// modal.show()
+//setTimeout(() => {
+ $('#coins-limitation-dialog').modal('toggle')
+   // modal.show()
+    
+//console.log(modal)    
+//}, 3000)
 
 init()
 
@@ -92,7 +94,6 @@ async function getCoins() {
     // changed to 50 coins in the query parameter
     url.searchParams.append('per_page', '50')
     url.searchParams.append('page', '1')
-    console.log(url)
     const response = await fetch(url);
     const coins = await response.json();
     return coins;
@@ -220,7 +221,7 @@ function updateChosenCoins() {
     } 
 
     chosenCoins = allCoins.filter((coin) => {
-        return chosenCoinsIds.find((id)=> {
+        return !!chosenCoinsIds.find((id)=> {
             return coin.id === id
         })
     })
@@ -235,10 +236,8 @@ function updateChosenCoins() {
 
 
 function showDialog() {
-    const myModal = document.getElementById('coins-limitation-dialog')
-    const myInput = document.getElementById('myInput')
-
-    myModal.modal('show')
+    console.log ('you have more than 5')
+    
 }
 
 
