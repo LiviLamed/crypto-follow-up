@@ -10,9 +10,9 @@ const cardsContainer = document.getElementById('cards-container');
 const searchInput = document.getElementById("search-bar")
 const allSwitchButtons = document.getElementsByClassName('follow-coin-in-report-switch')
 //setTimeout(() => {
- $('#coins-limitation-dialog').modal('toggle')
-   // modal.show()
-    
+
+// modal.show()
+
 //console.log(modal)    
 //}, 3000)
 
@@ -20,6 +20,7 @@ init()
 
 let allCoins = []
 let coinsToDisplay = []
+let intervalId;
 
 
 
@@ -43,15 +44,12 @@ searchInput.addEventListener("input", (e) => {
 
 
 async function init() {
-    const coins = await getCoins()
+    const coins = await getCoins('usd')
     allCoins = coins;
     coinsToDisplay = allCoins;
     dynamicNavBar()
     displayCoins()
-    
-    chosenCoins = allCoins.splice(0, 5)
-    console.log(chosenCoins)
-    displayGraph()
+
 }
 
 
@@ -68,18 +66,42 @@ function dynamicNavBar() {
         currenciesMainContent.style.display = 'block';
         reportsMainContent.style.display = 'none'
         aboutMainContent.style.display = 'none';
+       if(intervalId){
+        clearInterval(intervalId)
+        intervalId = null;
+       } 
+
     }
 
     function displayReports() {
+
         currenciesMainContent.style.display = 'none'
         reportsMainContent.style.display = 'block'
         aboutMainContent.style.display = 'none'
+
+        const chartContainer = document.getElementById('chart-container')
+        const noChosenCoinsMessage = document.getElementById('no-chosen-coins-message')
+        
+        if(chosenCoins.length){
+            chartContainer.style.display = 'block'
+            noChosenCoinsMessage.style.display = 'none'
+            displayChart()
+            intervalId = setInterval(updateChart, 2000)
+        } else {
+            chartContainer.style.display = 'none'
+            noChosenCoinsMessage.style.display = 'block'
+            
+        }
     }
 
     function displayAbout() {
         currenciesMainContent.style.display = 'none'
         reportsMainContent.style.display = 'none'
         aboutMainContent.style.display = 'block'
+        if(intervalId){
+            clearInterval(intervalId)
+            intervalId = null;
+           } 
     }
 
 
@@ -87,13 +109,15 @@ function dynamicNavBar() {
 }
 
 
-async function getCoins() {
-    const url = new URL('https://api.coingecko.com/api/v3/coins/markets')
-    url.searchParams.append('vs_currency', 'usd')
-    url.searchParams.append('order', 'market_cap_desc')
-    // changed to 50 coins in the query parameter
-    url.searchParams.append('per_page', '50')
-    url.searchParams.append('page', '1')
+async function getCoins(currency) {
+    // // const url = new URL('https://api.coingecko.com/api/v3/coins/markets')
+    // url.searchParams.append('vs_currency', `${currency}`)
+    // url.searchParams.append('order', 'market_cap_desc')
+    // // changed to 50 coins in the query parameter
+    // url.searchParams.append('per_page', '50')
+    // url.searchParams.append('page', '1')
+
+    const url = new URL('/assets/data.json', window.origin)
     const response = await fetch(url);
     const coins = await response.json();
     return coins;
@@ -101,11 +125,11 @@ async function getCoins() {
 
 
 async function getCoinInfo(coinId) {
-   
+
     const url = new URL(`https://api.coingecko.com/api/v3/coins/${coinId}`)
     const response = await fetch(url)
     const coinInfo = await response.json()
-  
+
 
     const coinPriceUsd = coinInfo.market_data.current_price.usd;
     const coinPriceIls = coinInfo.market_data.current_price.ils;
@@ -181,19 +205,8 @@ async function displayCoins() {
         `
         }
         cardsContainer.innerHTML = html;
-
     }
-
-
 }
-
-// function getFollowedInReportCoins() {
-
-//     const chosenCoins = allCoins.filter(coin => {
-
-//     })
-// }
-
 
 
 let chosenCoins = []
@@ -201,9 +214,9 @@ let chosenCoins = []
 
 
 function updateChosenCoins() {
-    const chosenCoinsIds = []
-        
-   
+    let chosenCoinsIds = []
+
+
 
     let numberOfOnSwitches = 0
     for (const switchButton of allSwitchButtons) {
@@ -214,21 +227,21 @@ function updateChosenCoins() {
             numberOfOnSwitches++
             if (numberOfOnSwitches > 5) {
                 showDialog()
-                
+
                 return false;
             }
-        } 
-    } 
+        }
+    }
 
     chosenCoins = allCoins.filter((coin) => {
-        return !!chosenCoinsIds.find((id)=> {
+        return !!chosenCoinsIds.find((id) => {
             return coin.id === id
         })
     })
 
 
-    console.log(chosenCoins)
-    displayGraph()
+    updateCardsInModal()
+    
 
     return true
 
@@ -236,124 +249,180 @@ function updateChosenCoins() {
 
 
 function showDialog() {
-    console.log ('you have more than 5')
+    $('#coins-limitation-dialog').modal('toggle')
+
+}
+
+function updateCardsInModal() {
+    const modalCardsContainer = document.getElementById('modal-body')
+
+    let html = ''
+    for (const coin of chosenCoins) {
+        html += `
+        <div class="col-lg-2 col-md-3 col-sm-6 col-12">   
+        <div class="card">
+            <img src="${coin.image}" class="card-img-top coin-card-image" alt="${coin.image}">
+            <div class="form-check form-switch">
+                <input class="form-check-input follow-coin-in-report-switch" type="checkbox" onclick="canFollowCoinInReport()" role="switch" id="switch-${coin.id}" name="${coin.id}">
+            </div>
+            <div class="card-body">
+            <h5 class="card-title">Btn</h5>
+            <h6 class="card-title">Bitcoin</h6>
+            
+            <p>
+                <button onclick="getCoinInfo('${coin.id}')" class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#coin-collapse-${coin.id}" aria-expanded="false" aria-controls="collapseExample">
+                More Info
+                </button>
+            </p>
+            <div class="collapse" id="coin-collapse-${coin.id}">
+            
+                <div class="card card-body">
+                <table>
+                    
+                    
+                    <tbody>
+                        <tr table-primary>
+                            <th id="card-info-dollar" class="table-primary">$</th>
+                            <td id="coin-usd-price-${coin.id}"></td>
+
+                        </tr>
+
+                        <tr table-primary>
+                            <th id="card-info-shekel">₪</th>
+                            <td id="coin-ils-price-${coin.id}"></td>
+                        </tr>
+
+                        <tr table-primary>
+                            <th id="card-info-euro">€</th>
+                            <td id="coin-eur-price-${coin.id}"></td>                         
+                        </tr>
+                    </tbody>
+
+                </table>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  
+  </div>`
+    }
+
+    modalCardsContainer.innerHTML = html;
+}
+
+
+
+let coinsData = []
+let chart;
+
+
+function displayChart() {
+    if(chart) {
+        coinsData = []
+        chart.destroy()
+        chart = null;
+    }
+    console.log('display chart called')
+    for (const coin of chosenCoins) {
+        const coinData = {
+            name: coin.name,
+            id: coin.id,
+            type: "spline",
+            yValueFormatString: "######.##",
+            showInLegend: true,
+            dataPoints: [{
+                x: new Date(),
+                y: coin.current_price
+            }]
+
+        }
+        coinsData.push(coinData)
+
+
+    }
+
+
+    chart = new CanvasJS.Chart("chart-container", {
+        animationEnabled: true,
+        title: {
+            text: "Live - Livi's Crypto Report"
+        },
+        axisX: {
+            valueFormatString: "HH:mm:ss"
+        },
+        axisY: {
+            title: "Value For USD",
+            suffix: "$"
+        },
+        legend: {
+            cursor: "pointer",
+            fontSize: 16,
+            itemclick: toggleDataSeries
+        },
+        toolTip: {
+            shared: true
+        },
+        data: coinsData
+    });
+
+
+
+    chart.render();
+
+
+
+    function toggleDataSeries(e) {
+        if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+            e.dataSeries.visible = false;
+        }
+        else {
+            e.dataSeries.visible = true;
+        }
+        chart.render();
+    }
+
+}
+
+
+
+async function updateChart() {
+    allCoins = await getCoins('usd')
+    chosenCoins = allCoins.filter((coin) => {
+        return !!chosenCoins.find((chosenCoin) => {
+            return coin.id === chosenCoin.id
+        })
+    })
     
+
+
+
+    for(const coin of chosenCoins) {
+        
+        const coinData = coinsData.find((data) => data.id === coin.id)
+        console.log('updateChart logged: ', coinData)
+        coinData.dataPoints.push({x: new Date(), y: coin.current_price})
+    }
+        chart.render()
+
+    
+        // coinsData.push(coinData)
+
+        // //display 20 data-points in chart
+        // if (coinsData.length > 20) {
+        //     coinsData.shift()
+        // }
+        // chart.data = coinsData;
+
+        // chart.render()
+
+
 }
 
 
 
-   
- function displayGraph() {
 
-     var chart = new CanvasJS.Chart("chartContainer", {
-	animationEnabled: true,
-	title:{
-		text: "Live - Livi's Crypto Report"
-         },
-	axisX: {
-		valueFormatString: "YYYY/MM/DD"
-	},
-	axisY: {
-		title: "Value For USD",
-		suffix: "$"
-	},
-	legend:{
-		cursor: "pointer",
-		fontSize: 16,
-		itemclick: toggleDataSeries
-	},
-	toolTip:{
-		shared: true
-	},
-	data: [{
-		name: chosenCoins[0].name,
-		type: "spline",
-		yValueFormatString: "######.## ",
-		showInLegend: true,
-		dataPoints: [
-			{ x: new Date(2017,6,24), y: 31 },
-			{ x: new Date(2017,6,25), y: 31 },
-			{ x: new Date(2017,6,26), y: 29 },
-			{ x: new Date(2017,6,27), y: 29 },
-			{ x: new Date(2017,6,28), y: 31 },
-			{ x: new Date(2017,6,29), y: 30 },
-			{ x: new Date(2017,6,30), y: 29 }
-		]
-	},
-           {
-		name: chosenCoins[1].name,
-		type: "spline",
-		yValueFormatString: "######.## ",
-		showInLegend: true,
-		dataPoints: [
-			{ x: new Date(2017,6,24), y: 10 },
-			{ x: new Date(2017,6,25), y: 31 },
-			{ x: new Date(2017,6,26), y: 29 },
-			{ x: new Date(2017,6,27), y: 20 },
-			{ x: new Date(2017,6,28), y: 31 },
-			{ x: new Date(2017,6,29), y: 30 },
-			{ x: new Date(2017,6,30), y: 29 }
-		]
-	},
-	{
-		name: chosenCoins[2].name,
-		type: "spline",
-		yValueFormatString: "#0.## °C",
-		showInLegend: true,
-		dataPoints: [
-			{ x: new Date(2017,6,24), y: 20 },
-			{ x: new Date(2017,6,25), y: 20 },
-			{ x: new Date(2017,6,26), y: 25 },
-			{ x: new Date(2017,6,27), y: 25 },
-			{ x: new Date(2017,6,28), y: 25 },
-			{ x: new Date(2017,6,29), y: 25 },
-			{ x: new Date(2017,6,30), y: 25 }
-		]
-	},
-           {
-		name: chosenCoins[3].name,
-		type: "spline",
-		yValueFormatString: "######.## ",
-		showInLegend: true,
-		dataPoints: [
-			{ x: new Date(2017,6,24), y: 31 },
-			{ x: new Date(2017,6,25), y: 50 },
-			{ x: new Date(2017,6,26), y: 29 },
-			{ x: new Date(2017,6,27), y: 33 },
-			{ x: new Date(2017,6,28), y: 31 },
-			{ x: new Date(2017,6,29), y: 21 },
-			{ x: new Date(2017,6,30), y: 29 }
-		]
-	},
-	{
-		name: chosenCoins[4].name,
-		type: "spline",
-		yValueFormatString: "#0.## °C",
-		showInLegend: true,
-		dataPoints: [
-			{ x: new Date(2017,6,24), y: 22 },
-			{ x: new Date(2017,6,25), y: 19 },
-			{ x: new Date(2017,6,26), y: 23 },
-			{ x: new Date(2017,6,27), y: 24 },
-			{ x: new Date(2017,6,28), y: 24 },
-			{ x: new Date(2017,6,29), y: 23 },
-			{ x: new Date(2017,6,30), y: 23 }
-		]
-	}]
-});
-chart.render();
-
-function toggleDataSeries(e){
-	if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-		e.dataSeries.visible = false;
-	}
-	else{
-		e.dataSeries.visible = true;
-	}
-	chart.render();
-}
-
-}
+// setInterval (() => updateChart(), 2000);
 
 
 

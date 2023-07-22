@@ -38,10 +38,7 @@
     <input type="search" id="search-bar" data-search-input>
   </header>
     
-  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#coins-limitation-dialog">
-    Launch demo modal
-  </button>
-  
+
   <div id="main-content" class="page-main-content">
     <div id="currencies-main-content" class="container text-center currencies-main-content">
       <div id="cards-container" class="row"></div>
@@ -49,7 +46,8 @@
 
 
     <div id="reports-main-content" class="container reports-main-content">
-      <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+      <div id="chart-container" style="height: 370px; width: 100%;"></div>
+      <div id="no-chosen-coins-message">Please choose coins to follow in the report...</div>
     </div>
 
 
@@ -68,8 +66,8 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
-        <div class="modal-body " id="modal-body">
-          <div id="modal-cards-container" class="row">
+        <div class="modal-body row" id="modal-body">
+          <!-- <div id="modal-cards-container" class="row">
             <div class="col-lg-2 col-md-3 col-sm-6 col-12">   
                 <div class="card">
                     <img src="${coin.image}" class="card-img-top coin-card-image" alt="${coin.image}">
@@ -116,7 +114,8 @@
                 </div>
             </div>
           
-          </div> 
+          </div>  -->
+          
         </div> 
       </div>
     </div>
