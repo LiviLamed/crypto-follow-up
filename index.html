@@ -6,6 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Architects+Daughter">
   <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto&family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet"
@@ -28,19 +31,20 @@
 
   <header>
     <div class="nav-bar">
-      <a id="currencies-link" href="javascript:void(0)">⚛️Currencies</a>
+      <a id="currencies-link" class="header-link" href="javascript:void(0)">⚛️Currencies</a>
       <span>|</span>
-      <a id="reports-link" href="javascript:void(0)">Reports</a>
+      <a id="reports-link" class="header-link" href="javascript:void(0)">Reports</a>
       <span>|</span>
-      <a id="about-link" href="javascript:void(0)">About</a>
+      <a id="about-link" class="header-link" href="javascript:void(0)">About</a>
     </div>
-    <label for="search">Search</label>
-    <input type="search" id="search-bar" data-search-input>
+    
   </header>
     
 
   <div id="main-content" class="page-main-content">
     <div id="currencies-main-content" class="container text-center currencies-main-content">
+      <label for="search-bar">Search</label>
+    <input type="search" id="search-bar" data-search-input>
       <div id="cards-container" class="row"></div>
     </div>
 
@@ -51,7 +55,48 @@
     </div>
 
 
-    <div id="about-main-content" class="container about-main-content"></div>
+    <div id="about-main-content" class="container about-main-content">
+      <h2>About Me</h2>
+      <section>
+        <p>My name is Livi Lamed, from Jerusalem originally, have been living in the city of Tel Aviv in the next 10 years. 
+          I am drama writer, create content for TV and theatre. 
+          I run and own an online Ulpan for Hebrew. Nowadays I also create and design applications and websites as a frontend engineer.
+        </p>
+      </section>
+      <section>
+        <section class="contact-body ">
+          <form action="submit" class="container form-body container space-between">
+              <div class="input-group ">
+               <label class="form-label" for="name">Name </label>
+               <br>
+                  <input type="text" class="form-control" placeholder="Livi Lamed" id="name" required minlength="2">
+                </div>
+                
+                <div class="input-group">
+                  <label class="form-label" for="email">Email</label>
+                  <input id="email" type="email" class="form-control" placeholder="Livi@gmail.com" required>
+                </div>
+                
+                <div class="">
+                  <label class="form-label" for="phone">Phone  :</label>
+                  <div class="input-group">
+                    <span class="input-group-text" >+972</span>
+                    <input type="number" class="form-control" id="phone" placeholder="055-555-5555" pattern="{3,3,4}" required>
+                  </div>
+                  <div class="form-text" id="reason"></div>
+                </div>
+                
+               
+                <div class="input-group">
+                  <span class="input-group-text">Why are you contacting?</span>
+                  <textarea class="form-control"></textarea>
+                </div>
+                <button type="submit" class="send-btn">Send</button>
+          </form>
+      </section>
+      
+      </section>
+    </div>
   </div>
 
 
@@ -66,61 +111,11 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
-        <div class="modal-body row" id="modal-body">
-          <!-- <div id="modal-cards-container" class="row">
-            <div class="col-lg-2 col-md-3 col-sm-6 col-12">   
-                <div class="card">
-                    <img src="${coin.image}" class="card-img-top coin-card-image" alt="${coin.image}">
-                    <div class="form-check form-switch">
-                        <input class="form-check-input follow-coin-in-report-switch" type="checkbox" onclick="canFollowCoinInReport()" role="switch" id="switch-${coin.id}" name="${coin.id}">
-                    </div>
-                    <div class="card-body">
-                    <h5 class="card-title">Btn</h5>
-                    <h6 class="card-title">Bitcoin</h6>
-                    
-                    <p>
-                        <button onclick="getCoinInfo('${coin.id}')" class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#coin-collapse-${coin.id}" aria-expanded="false" aria-controls="collapseExample">
-                        More Info
-                        </button>
-                    </p>
-                    <div class="collapse" id="coin-collapse-${coin.id}">
-                    
-                        <div class="card card-body">
-                        <table>
-                            
-                            
-                            <tbody>
-                                <tr table-primary>
-                                    <th id="card-info-dollar" class="table-primary">$</th>
-                                    <td id="coin-usd-price-${coin.id}"></td>
-
-                                </tr>
-
-                                <tr table-primary>
-                                    <th id="card-info-shekel">₪</th>
-                                    <td id="coin-ils-price-${coin.id}"></td>
-                                </tr>
-
-                                <tr table-primary>
-                                    <th id="card-info-euro">€</th>
-                                    <td id="coin-eur-price-${coin.id}"></td>                         
-                                </tr>
-                            </tbody>
-
-                        </table>
-                        </div>
-                    </div>
-                  </div>
-                </div>
-            </div>
-          
-          </div>  -->
-          
-        </div> 
+        <div class="modal-body row" id="modal-body"></div> 
       </div>
     </div>
 </div>
-<!-- report -->
+
   
 
   

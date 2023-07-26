@@ -10,23 +10,20 @@ const cardsContainer = document.getElementById('cards-container');
 const searchInput = document.getElementById("search-bar")
 const allSwitchButtons = document.getElementsByClassName('follow-coin-in-report-switch')
 const modalBody = document.getElementById('modal-body')
+const allModalSwitches = document.getElementsByClassName('coin-in-modal');
+const allCollapses = document.getElementsByClassName('collapse');
+const allCards = document.getElementsByClassName('card')
 
-//setTimeout(() => {
 
-// modal.show()
-
-//console.log(modal)    
-//}, 3000)
-
-init()
 
 let allCoins = []
 let coinsToDisplay = []
+let chosenCoins = []
 let intervalId;
+let coinsData = []
+let chart;
 
-
-
-
+init()
 
 searchInput.addEventListener("input", (e) => {
     const searchValue = e.target.value;
@@ -38,20 +35,20 @@ searchInput.addEventListener("input", (e) => {
     } else {
         coinsToDisplay = allCoins
     }
-
     displayCoins()
-
 })
 
-
-
 async function init() {
-    const coins = await getCoins('usd')
-    allCoins = coins;
-    coinsToDisplay = allCoins;
-    dynamicNavBar()
-    displayCoins()
-
+    try {
+        const coins = await getCoins('usd')
+        allCoins = coins;
+    } catch (err) {
+        console.log('Error has accured in init function:', err.stack);
+    } finally {
+        coinsToDisplay = allCoins;
+        dynamicNavBar()
+        displayCoins()
+    }
 }
 
 
@@ -73,11 +70,13 @@ function displayCurrencies() {
         clearInterval(intervalId)
         intervalId = null;
     }
-
+    for (const switchButton of allSwitchButtons) {
+        switchButton.checked = false;
+    }
+    chosenCoins = []
 }
 
 function displayReports() {
-
     currenciesMainContent.style.display = 'none'
     reportsMainContent.style.display = 'block'
     aboutMainContent.style.display = 'none'
@@ -107,56 +106,64 @@ function displayAbout() {
     }
 }
 
-
-
 async function getCoins(currency) {
-    // const url = new URL('https://api.coingecko.com/api/v3/coins/markets')
-    // url.searchParams.append('vs_currency', `${currency}`)
-    // url.searchParams.append('order', 'market_cap_desc')
-    // // changed to 50 coins in the query parameter
-    // url.searchParams.append('per_page', '50')
-    // url.searchParams.append('page', '1')
+    try {
+            const url = new URL('https://api.coingecko.com/api/v3/coins/markets')
+    url.searchParams.append('vs_currency', `${currency}`)
+    url.searchParams.append('order', 'market_cap_desc')
+    // changed to 50 coins in the query parameter
+    url.searchParams.append('per_page', '50')
+    url.searchParams.append('page', '1')
 
-    const url = new URL('/assets/data.json', window.origin)
+    //for test purposes you may use data.json attached to this file -using this URL instead of the url above
+    // const url = new URL('/assets/data.json', window.origin)
     const response = await fetch(url);
     const coins = await response.json();
     return coins;
+    }catch (err) {
+        console.log('Error has accured in getCoins function:', err.stack);
+    }
 }
 
+async function getCoinInfo(coinId, btnElement) {
+    try {
+        const url = new URL(`https://api.coingecko.com/api/v3/coins/${coinId}`)
+        const response = await fetch(url)
+        const coinInfo = await response.json()
+        const coinPriceUsd = coinInfo.market_data.current_price.usd;
+        const coinPriceIls = coinInfo.market_data.current_price.ils;
+        const coinPriceEur = coinInfo.market_data.current_price.eur;
 
-async function getCoinInfo(coinId) {
-    const url = new URL(`https://api.coingecko.com/api/v3/coins/${coinId}`)
-    const response = await fetch(url)
-    const coinInfo = await response.json()
+        const coinPriceContainerUsd = document.getElementById(`coin-usd-price-${coinId}`)
+        const coinPriceContainerIls = document.getElementById(`coin-ils-price-${coinId}`)
+        const coinPriceContainerEur = document.getElementById(`coin-eur-price-${coinId}`)
 
-    const coinPriceUsd = coinInfo.market_data.current_price.usd;
-    const coinPriceIls = coinInfo.market_data.current_price.ils;
-    const coinPriceEur = coinInfo.market_data.current_price.eur;
-
-    const coinPriceContainerUsd = document.getElementById(`coin-usd-price-${coinId}`)
-    const coinPriceContainerIls = document.getElementById(`coin-ils-price-${coinId}`)
-    const coinPriceContainerEur = document.getElementById(`coin-eur-price-${coinId}`)
-
-    coinPriceContainerUsd.innerHTML = coinPriceUsd.toFixed(2);
-    coinPriceContainerIls.innerHTML = coinPriceIls.toFixed(2);
-    coinPriceContainerEur.innerHTML = coinPriceEur.toFixed(2);
-
+        coinPriceContainerUsd.innerHTML = coinPriceUsd.toFixed(2);
+        coinPriceContainerIls.innerHTML = coinPriceIls.toFixed(2);
+        coinPriceContainerEur.innerHTML = coinPriceEur.toFixed(2);
+        
+        $(btnElement).closest('.card').toggleClass('open-card')
+    } catch (err) {
+        console.log('Error has accured in getCoinInfo function:', err.stack);
+    } 
+        
 }
 
 
 async function displayCoins() {
-    const coins = coinsToDisplay;
-    if (coinsToDisplay.length === 0) {
-        cardsContainer.innerHTML = '<p id="no-results-message" class="no-results-message">No Results...</p>'
-    } else {
-        let html = ''
+    try {
+        const coins = coinsToDisplay;
+        if (coinsToDisplay.length === 0) {
+            cardsContainer.innerHTML = '<p id="no-results-message" class="no-results-message">No Results...</p>'
+        } else {
+            let html = ''
 
-        for (const coin of coins) {
+            for (const coin of coins) {
 
 
-            html += `
+                html += `
             <div class="col-lg-2 col-md-3 col-sm-6 col-12">   
-            <div class="card">
+            <div class="card" id="card-${coin.id}">
                 <img src="${coin.image}" class="card-img-top coin-card-image" alt="${coin.image}">
                 <div class="form-check form-switch">
                     <input class="form-check-input follow-coin-in-report-switch" type="checkbox" onclick="updateChosenCoins(allSwitchButtons)" role="switch" id="${coin.id}" name="${coin.id}">
@@ -166,7 +173,7 @@ async function displayCoins() {
                 <h6 class="card-title">${coin.name}</h6>
                 
                 <p>
-                    <button onclick="getCoinInfo('${coin.id}')" class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#coin-collapse-${coin.id}" aria-expanded="false" aria-controls="collapseExample">
+                    <button onclick="getCoinInfo('${coin.id}', this)" class="btn btn-primary more-info-btn" type="button" data-bs-toggle="collapse" data-bs-target="#coin-collapse-${coin.id}" aria-expanded="false" aria-controls="collapseExample">
                     More Info
                     </button>
                 </p>
@@ -178,7 +185,7 @@ async function displayCoins() {
                         
                         <tbody>
                             <tr table-primary>
-                                 <th id="card-info-dollar" class="table-primary">$</th>
+                                 <th id="card-info-dollar" class="table-primary dollar-th">$</th>
                                  <td id="coin-usd-price-${coin.id}"></td>
 
                             </tr>
@@ -201,22 +208,18 @@ async function displayCoins() {
             </div>
         </div>        
         `
+            }
+            cardsContainer.innerHTML = html;
         }
-        cardsContainer.innerHTML = html;
+    } catch (err) {
+        console.log('Error has accrued in displayCoins function:', err.stack);
     }
 }
 
 
-let chosenCoins = []
-
-
-
-
-
+// switchButtons parameter may be all switch buttons in main page or the ones displayed in the modal
 function updateChosenCoins(switchButtons) {
     let chosenCoinsIds = []
-
-
 
     let numberOfOnSwitches = 0
     for (const switchButton of switchButtons) {
@@ -239,73 +242,19 @@ function updateChosenCoins(switchButtons) {
             }
         }
     }
-
     chosenCoins = allCoins.filter((coin) => {
         return !!chosenCoinsIds.find((id) => {
             return coin.id === id
         })
     })
-
-
-
-    // const coinsInModal = modalBody.innerHTML;
-    console.log(chosenCoins)
-
-
 }
-
 
 
 function showDialog() {
     $('#coins-limitation-dialog').modal('show')
 }
 
-const allModalSwitches = document.getElementsByClassName('coinInModalSwitch');
-
-
-// function updateChosenCoinFromModal() {
-
-//     let modalChosenCoinsIds = []
-//     let numberOfOnSwitches = 0
-
-//     for (const switchButton of allModalSwitches) {
-//         const coinId = switchButton.id
-
-//         if (switchButton.checked) {
-//             modalChosenCoinsIds.push(coinId)
-//             numberOfOnSwitches++
-//             if (numberOfOnSwitches > 5) {
-//                 chosenCoins = allCoins.filter((coin) => {
-//                     return !!modalChosenCoinsIds.find((id) => {
-//                         return coin.id === id
-//                     })
-//                 })
-
-//                 displayCoinsInModal()
-//                 showDialog()
-
-//                 return false;
-//             }
-//         }
-//     }
-
-//     chosenCoins = allCoins.filter((coin) => {
-//         return !!chosenCoinsIds.find((id) => {
-//             return coin.id === id
-//         })
-//     })
-
-
-
-//     // const coinsInModal = modalBody.innerHTML;
-//     console.log(chosenCoins)
-// }
-
-
-
-
 function displayCoinsInModal() {
-
     let html = ''
     for (const coin of chosenCoins) {
         html += `
@@ -313,66 +262,35 @@ function displayCoinsInModal() {
             <div class="card">
                 <img src="${coin.image}" class="card-img-top coin-card-image" alt="${coin.image}">
                 <div class="form-check form-switch">
-                    <input class="form-check-input coinInModalSwitch" type="checkbox" checked onclick="updateChosenCoins(allModalSwitches)" role="switch" id="${coin.id}" name="${coin.id}">
+                    <input class="form-check-input coin-in-modal" type="checkbox" checked onclick="updateChosenCoins(allModalSwitches)" role="switch" id="${coin.id}" name="${coin.id}">
                 </div>
                 <div class="card-body">
                 <h5 class="card-title">${coin.symbol}</h5>
                 <h6 class="card-title">${coin.name}</h6>
-                
-                <p>
-                    <button onclick="getCoinInfo('${coin.id}')" class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#coin-collapse-${coin.id}" aria-expanded="false" aria-controls="collapseExample">
-                    More Info
-                    </button>
-                </p>
-                <div class="collapse" id="coin-collapse-${coin.id}">
-                
-                    <div class="card card-body">
-                    <table>
-                        
-                        
-                        <tbody>
-                            <tr table-primary>
-                                <th id="card-info-dollar" class="table-primary">$</th>
-                                <td id="coin-usd-price-${coin.id}"></td>
-
-                            </tr>
-
-                            <tr table-primary>
-                                <th id="card-info-shekel">₪</th>
-                                <td id="coin-ils-price-${coin.id}"></td>
-                            </tr>
-
-                            <tr table-primary>
-                                <th id="card-info-euro">€</th>
-                                <td id="coin-eur-price-${coin.id}"></td>                         
-                            </tr>
-                        </tbody>
-
-                        </table>
-                        </div>
-                        </div>
-                        </div>
-                        </div>
+                </div>
             </div>
   
         </div>`
     }
     html += `<button type="button" class="btn btn-info" onclick="goToReportFromModal()">Go To Report</button>    `
+    html += `<button type="button" class="btn btn-info" onclick="closeModal()">Cancel</button>    `
     modalBody.innerHTML = html;
 }
 
+function closeModal() {
+    for (const switchButton of allSwitchButtons) {
+        switchButton.checked = false;
+    }
+    chosenCoins = []
+    $('#coins-limitation-dialog').modal('hide')
+}
+
 function goToReportFromModal() {
-    console.log('modal btn clicked')
     if (chosenCoins.length <= 5) {
         $('#coins-limitation-dialog').modal('hide')
         displayReports()
     }
 }
-
-
-let coinsData = []
-let chart;
-
 
 function displayChart() {
     if (chart) {
@@ -391,13 +309,9 @@ function displayChart() {
                 x: new Date(),
                 y: coin.current_price
             }]
-
         }
         coinsData.push(coinData)
-
-
     }
-
 
     chart = new CanvasJS.Chart("chart-container", {
         animationEnabled: true,
@@ -426,8 +340,6 @@ function displayChart() {
 
     chart.render();
 
-
-
     function toggleDataSeries(e) {
         if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
             e.dataSeries.visible = false;
@@ -440,44 +352,50 @@ function displayChart() {
 
 }
 
-
-
 async function updateChart() {
-    allCoins = await getCoins('usd')
-    chosenCoins = allCoins.filter((coin) => {
-        return !!chosenCoins.find((chosenCoin) => {
-            return coin.id === chosenCoin.id
+    try {
+        allCoins = await getCoins('usd')
+        chosenCoins = allCoins.filter((coin) => {
+            return !!chosenCoins.find((chosenCoin) => {
+                return coin.id === chosenCoin.id
+            })
         })
-    })
 
 
+    } catch (err) {
+        console.log('Error has accrued in updateChart function:', err.stack);
+    } finally {
+        for (const coin of chosenCoins) {
+
+            const coinData = coinsData.find((data) => data.id === coin.id)
+            coinData.dataPoints.push({ x: new Date(), y: coin.current_price })
+        }
 
 
-    for (const coin of chosenCoins) {
+        //TTl = 20 seconds. chart shows 10 data points replaced every 2 sec
+        if (coinsData.length > 10) {
+            coinsData.shift()
+        }
 
-        const coinData = coinsData.find((data) => data.id === coin.id)
-        coinData.dataPoints.push({ x: new Date(), y: coin.current_price })
+        chart.render()
+
     }
-    chart.render()
+}
 
+console.log(allCards)
 
-    // coinsData.push(coinData)
-
-    // //display 20 data-points in chart
-    // if (coinsData.length > 20) {
-    //     coinsData.shift()
-    // }
-    // chart.data = coinsData;
-
-    // chart.render()
-
-
+const handleMouseMove = e => {
+    const {currentTarget: target } = e;
+    const rect = target.getBoundingClientRect(),
+            x = e.clientX = rect.left,
+            y = e.clientY = rect.top;
+    target.style.setProperty("--mouse-x", `${x}px`);
+    target.style.setProperty("--mouse-y", `${y}px`);
 }
 
 
-
-
-// setInterval (() => updateChart(), 2000);
-
+for(const card of allCards) {
+    card.onmousemove = e => handleMouseMove(e);
+}
 
 
