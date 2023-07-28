@@ -6,17 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Architects+Daughter">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto&family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Rubik:wght@400;700&display=swap" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-
+  <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous" defer></script>
+  <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+    crossorigin="anonymous" defer></script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"
@@ -29,96 +30,226 @@
 
 <body>
 
-  <header>
-    <div class="nav-bar">
-      <a id="currencies-link" class="header-link" href="javascript:void(0)">⚛️Currencies</a>
-      <span>|</span>
-      <a id="reports-link" class="header-link" href="javascript:void(0)">Reports</a>
-      <span>|</span>
-      <a id="about-link" class="header-link" href="javascript:void(0)">About</a>
+
+  <nav class="navbar navbar-expand-md bg-body-tertiary position-sticky">
+    <div class="container-fluid header-container">
+      <a class="navbar-brand" href="#"><img class="logo-img" src="/assets/images/logo-feather.jpg" alt=""></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <btn id="currencies-link" class="header-link nav-link active" aria-current="page" href="javascript:void(0)">
+              Currencies | </btn>
+          </li>
+          <li class="nav-item">
+            <btn id="reports-link" class="header-link nav-link" href="javascript:void(0)">Reports</btn>
+          </li>
+          <li class="nav-item">
+            <btn id="about-link" class="header-link nav-link" href="javascript:void(0)">About</btn>
+
+          </li>
+
+        </ul>
+
+      </div>
     </div>
-    
-  </header>
-    
+
+  </nav>
+
+
 
   <div id="main-content" class="page-main-content">
     <div id="currencies-main-content" class="container text-center currencies-main-content">
-      <label for="search-bar">Search</label>
-    <input type="search" id="search-bar" data-search-input>
+
+      <input type="search" id="search-bar" data-search-input class="search-bar form-control mr-sm-2"
+        placeholder="Search..." aria-label="Search">
       <div id="cards-container" class="row"></div>
     </div>
 
 
     <div id="reports-main-content" class="container reports-main-content">
+      <div id="no-chosen-coins-message" class="no-chosen-coins-message">Please choose coins to follow in the report...
+      </div>
+
       <div id="chart-container" style="height: 370px; width: 100%;"></div>
-      <div id="no-chosen-coins-message" class="no-chosen-coins-message">Please choose coins to follow in the report...</div>
     </div>
 
 
     <div id="about-main-content" class="container about-main-content">
       <h2>About Me</h2>
-      <section>
-        <p>My name is Livi Lamed, from Jerusalem originally, have been living in the city of Tel Aviv in the next 10 years. 
-          I am drama writer, create content for TV and theatre. 
-          I run and own an online Ulpan for Hebrew. Nowadays I also create and design applications and websites as a frontend engineer.
-        </p>
-      </section>
-      <section>
-        <section class="contact-body ">
-          <form action="submit" class="container form-body container space-between">
-              <div class="input-group ">
-               <label class="form-label" for="name">Name </label>
-               <br>
-                  <input type="text" class="form-control" placeholder="Livi Lamed" id="name" required minlength="2">
-                </div>
-                
-                <div class="input-group">
-                  <label class="form-label" for="email">Email</label>
-                  <input id="email" type="email" class="form-control" placeholder="Livi@gmail.com" required>
-                </div>
-                
-                <div class="">
-                  <label class="form-label" for="phone">Phone  :</label>
-                  <div class="input-group">
-                    <span class="input-group-text" >+972</span>
-                    <input type="number" class="form-control" id="phone" placeholder="055-555-5555" pattern="{3,3,4}" required>
+
+      <div class="row menu">
+        <div class="accordion bg-transparent " id="about-accordion">
+          <div class="accordion-item bg-transparent text-white">
+            <h2 class="accordion-header">
+              <button class="accordion-button bg-transparent text-white nav-box" type="button" data-bs-toggle="collapse"
+                data-bs-target="#what-is-crypto-collapse" aria-expanded="true" aria-controls="collapseOne">
+                What is Crypto?
+              </button>
+            </h2>
+            <div id="what-is-crypto-collapse" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+              <div class="accordion-body bg-black  text-white collaps-item">
+                Cryptocurrency is a digital or virtual currency that operates on distributed ledger technology called
+                a blockchain and uses cryptography for security. It is decentralized and operates independently of a
+                central bank.<br>
+                Unlike traditional currencies, cryptocurrencies are not backed by a physical commodity or government,
+                and their value is determined by market demand and supply. Cryptocurrencies can be used to buy goods
+                and services, transfer funds, and trade in markets. Popular cryptocurrencies include Bitcoin,
+                Ethereum, Litecoin, Ripple, and Cronos.<br>
+                Many cryptocurrencies, like Bitcoin, are created through a process called mining, which involves
+                solving complex mathematical equations to validate and record transactions on a blockchain. This
+                mechanism is also called Proof of Work (PoW). Another consensus mechanism that has increased in
+                popularity — as it is more energy efficient — is Proof of Stake (PoS). Instead of mining, PoS relies
+                on network participants validating transactions. Ethereum, the second-largest cryptocurrency, uses
+                this consensus mechanism.<br>
+
+
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item bg-transparent text-white">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed bg-transparent text-white nav-box" type="button"
+                data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
+                aria-controls="collapseTwo">
+                What is Bitcoin?
+              </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse bg-transparent" data-bs-parent="#accordionExample">
+              <div class="accordion-body bg-black collaps-item">
+                Bitcoin is a cryptocurrency that operates on a peer-to-peer (P2P) network. It was created in 2009 by
+                an unknown person or group using the pseudonym Satoshi Nakamoto. Bitcoin is the first and most
+                well-known cryptocurrency, and it has gained significant popularity and value since its creation.<br>
+                Unlike traditional fiat currency, which is controlled by central banks and governments, Bitcoin
+                operates independently of any central authority. Transactions are verified and recorded on the
+                blockchain, which is a distributed ledger that maintains a permanent and transparent record of all
+                transactions.<br>
+                Bitcoin can be bought, sold, and exchanged on various cryptocurrency exchanges, and it can be used to
+                purchase goods and services from merchants that accept Bitcoin as a form of payment. The supply of
+                bitcoins is limited to 21 million units, and new bitcoins are created through mining, which involves
+                using specialized computer hardware to solve complex mathematical equations.<br>
+                Bitcoin is known for its high volatility, and its value can fluctuate rapidly in response to market
+                conditions, news events, and other factors. Many traders, including institutional investors, see
+                Bitcoin as a store of value and a way to participate in the growing cryptocurrency ecosystem.<br>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item bg-transparent text-white">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed bg-transparent text-white nav-box" type="button"
+                data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false"
+                aria-controls="collapseThree">
+                Where to buy Crypto?
+              </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+              <div class="accordion-body bg-black collaps-item">
+                There are several ways to buy cryptocurrencies, including:<br>
+                Brokerage services: Crypto brokers allow users to simply buy and sell cryptocurrencies. A popular
+                example is the Crypto.com App, trusted by over 80 million users. It is available at the Apple Store
+                and on Google Play.<br>
+                Cryptocurrency exchanges: These are online platforms where users can buy, sell, and trade
+                cryptocurrencies using fiat currency or other cryptocurrencies. They offer more complex functions
+                compared to a crypto brokerage, adding trading instruments like crypto derivatives. The Crypto.com
+                Exchange is an example of a popular crypto exchange.<br>
+                Peer-to-peer (P2P) marketplaces: These are platforms where buyers and sellers can directly trade
+                cryptocurrencies without the involvement of a third-party exchange. This is also known as DeFi, short
+                for decentralized finance. Multiple P2P crypto marketplaces can be accessed all in one app via the
+                Crypto.com DeFi Wallet.<br>
+                It is important to perform proper research and choose a reputable platform to buy cryptocurrencies.
+                For instance, Crypto.com holds the highest security rating in the industry. In addition, it is
+                advisable to store cryptocurrencies securely in a wallet like the Crypto.com App or Crypto.com DeFi
+                Wallet<br>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item bg-transparent text-white">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed bg-transparent text-white nav-box" type="button"
+                data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false"
+                aria-controls="collapseFour">
+                Who are we?
+              </button>
+            </h2>
+            <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+              <div class="accordion-body bg-black bg-opacity-75">
+                My name is Livi Lamed. Born and raised in Jerusalem, have been living in the city of Tel Aviv in the
+                last 10 years. <br>
+                I am a drama writer, create content for TV and theatre. <br>
+                I run and own an online Ulpan for Hebrew.<br>
+                Nowadays I also create and design applications and websites as a frontend engineer.<br>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item bg-transparent text-white">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed bg-transparent text-white nav-box" type="button"
+                data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false"
+                aria-controls="collapseFour">
+                Contact us
+              </button>
+            </h2>
+            <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+              <div class="accordion-body bg-black bg-opacity-75">
+                <form action="submit" class="container form-body container space-between">
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control form-object" id="floatingInput" placeholder="Livi Lamed">
+                    <label class="form-object" for="floatingInput">Full Name</label>
                   </div>
-                  <div class="form-text" id="reason"></div>
-                </div>
-                
-               
-                <div class="input-group">
-                  <span class="input-group-text">Why are you contacting?</span>
-                  <textarea class="form-control"></textarea>
-                </div>
-                <button type="submit" class="send-btn">Send</button>
-          </form>
-      </section>
-      
-      </section>
+                  <div class="form-floating">
+                    <div class="input-group">
+                      <span class="input-group-text">+972</span>
+                      <input type="number" class="form-control form-object" id="phone" placeholder="055-555-5555"
+                        pattern="{3,3,4}" required>
+                    </div>
+                    <div class="form-text form-object" id="reason"></div>
+                  </div>
+
+                  <div class="form-floating mb-3">
+                    <input type="email" class="form-control form-object" id="floatingEmail"
+                      placeholder="LiviLamed@example.com">
+                    <label for="floatingInput" class="form-object">Email address</label>
+                  </div>
+                  <div class="form-floating">
+                    <textarea class="form-control form-object" placeholder="Leave a comment here" id="floatingTextarea2"
+                      style="height: 100px"></textarea>
+                    <label for="floatingTextarea2">Write us...</label>
+                    <button class="btn submit-btn" type="submit">Send</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
 
-  
+
   <!-- Modal -->
-  <div class="modal fade" id="coins-limitation-dialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog">
+  <div class="modal fade" id="coins-limitation-dialog" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" role="dialog">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">          You may only follow live changes for five Currencies. Please choose the five you wish to see
+          <h1 class="modal-title fs-5" id="exampleModalLabel"> You may only follow live changes for five Currencies.
+            Please choose the five you wish to see
           </h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
-        <div class="modal-body row" id="modal-body"></div> 
+        <div class="modal-body row" id="modal-body"></div>
       </div>
     </div>
-</div>
+  </div>
 
-  
 
-  
+
+
 </body>
 
 </html>

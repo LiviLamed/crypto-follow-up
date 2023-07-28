@@ -90,9 +90,13 @@ function displayReports() {
         displayChart()
         intervalId = setInterval(updateChart, 2000)
     } else {
-        chartContainer.style.display = 'none'
+        chartContainer.style.display = 'block'
         noChosenCoinsMessage.style.display = 'block'
-
+        if (chart) {
+            coinsData = []
+            chart.destroy()
+            chart = null;
+        }
     }
 }
 
@@ -108,19 +112,19 @@ function displayAbout() {
 
 async function getCoins(currency) {
     try {
-            const url = new URL('https://api.coingecko.com/api/v3/coins/markets')
-    url.searchParams.append('vs_currency', `${currency}`)
-    url.searchParams.append('order', 'market_cap_desc')
-    // changed to 50 coins in the query parameter
-    url.searchParams.append('per_page', '50')
-    url.searchParams.append('page', '1')
+        // const url = new URL('https://api.coingecko.com/api/v3/coins/markets')
+        // url.searchParams.append('vs_currency', `${currency}`)
+        // url.searchParams.append('order', 'market_cap_desc')
+        // // changed to 50 coins in the query parameter
+        // url.searchParams.append('per_page', '50')
+        // url.searchParams.append('page', '1')
 
-    //for test purposes you may use data.json attached to this file -using this URL instead of the url above
-    // const url = new URL('/assets/data.json', window.origin)
-    const response = await fetch(url);
-    const coins = await response.json();
-    return coins;
-    }catch (err) {
+        //for test purposes you may use data.json attached to this file -using this URL instead of the url above
+        const url = new URL('/assets/data.json', window.origin)
+        const response = await fetch(url);
+        const coins = await response.json();
+        return coins;
+    } catch (err) {
         console.log('Error has accured in getCoins function:', err.stack);
     }
 }
@@ -141,12 +145,12 @@ async function getCoinInfo(coinId, btnElement) {
         coinPriceContainerUsd.innerHTML = coinPriceUsd.toFixed(2);
         coinPriceContainerIls.innerHTML = coinPriceIls.toFixed(2);
         coinPriceContainerEur.innerHTML = coinPriceEur.toFixed(2);
-        
+
         $(btnElement).closest('.card').toggleClass('open-card')
     } catch (err) {
         console.log('Error has accured in getCoinInfo function:', err.stack);
-    } 
-        
+    }
+
 }
 
 
@@ -169,17 +173,17 @@ async function displayCoins() {
                     <input class="form-check-input follow-coin-in-report-switch" type="checkbox" onclick="updateChosenCoins(allSwitchButtons)" role="switch" id="${coin.id}" name="${coin.id}">
                 </div>
                 <div class="card-body">
-                <h5 class="card-title">${coin.symbol}</h5>
+                <h5 class="card-symbol">${coin.symbol}</h5>
                 <h6 class="card-title">${coin.name}</h6>
                 
                 <p>
-                    <button onclick="getCoinInfo('${coin.id}', this)" class="btn btn-primary more-info-btn" type="button" data-bs-toggle="collapse" data-bs-target="#coin-collapse-${coin.id}" aria-expanded="false" aria-controls="collapseExample">
+                    <button onclick="getCoinInfo('${coin.id}', this)" class=" more-info-btn" type="button" data-bs-toggle="collapse" data-bs-target="#coin-collapse-${coin.id}" aria-expanded="false" aria-controls="collapseExample">
                     More Info
                     </button>
                 </p>
-                <div class="collapse" id="coin-collapse-${coin.id}">
+                <div class="collapse card-collapse" id="coin-collapse-${coin.id}">
                 
-                    <div class="card card-body">
+                    <div class=" card-body">
                     <table>
                         
                         
@@ -385,17 +389,16 @@ async function updateChart() {
 console.log(allCards)
 
 const handleMouseMove = e => {
-    const {currentTarget: target } = e;
+    const { currentTarget: target } = e;
     const rect = target.getBoundingClientRect(),
-            x = e.clientX = rect.left,
-            y = e.clientY = rect.top;
+        x = e.clientX = rect.left,
+        y = e.clientY = rect.top;
     target.style.setProperty("--mouse-x", `${x}px`);
     target.style.setProperty("--mouse-y", `${y}px`);
 }
 
 
-for(const card of allCards) {
+for (const card of allCards) {
     card.onmousemove = e => handleMouseMove(e);
 }
-
 
