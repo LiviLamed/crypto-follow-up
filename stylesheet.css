@@ -167,7 +167,7 @@ button {
     position: absolute;
     max-width: 130px;
     right: 25%;
-    top: -100px;
+    top: 30px;
     border-top-left-radius: 9rem 10rem;
     border-top-right-radius: 1rem 1rem;
     border-bottom-left-radius: 0.8rem 1rem;
@@ -175,6 +175,7 @@ button {
     filter: drop-shadow(0 0 3px black);
     padding-left: 20px;
     font-weight: bolder;
+    z-index: 3;
 
 
 }
