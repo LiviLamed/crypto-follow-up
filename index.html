@@ -62,164 +62,168 @@
 
 
   <div id="main-content" class="page-main-content">
-    <div id="currencies-main-content" class="container text-center currencies-main-content">
+    <div id="scroller" class="scroller">
+      <div id="currencies-main-content" class="container text-center currencies-main-content">
 
-      <input type="search" id="search-bar" data-search-input class="search-bar form-control mr-sm-2"
-        placeholder="Search..." aria-label="Search">
-      <div id="cards-container" class="row"></div>
-    </div>
-
-
-    <div id="reports-main-content" class="container reports-main-content">
-      <div id="no-chosen-coins-message" class="no-chosen-coins-message">Please choose coins to follow in the report...
+        <input type="search" id="search-bar" data-search-input class="search-bar form-control mr-sm-2"
+          placeholder="Search..." aria-label="Search">
+        <div id="cards-container" class="row"></div>
       </div>
 
-      <div id="chart-container" style="height: 370px; width: 100%;"></div>
-    </div>
+
+      <div id="reports-main-content" class="container reports-main-content">
+        <div id="no-chosen-coins-message" class="no-chosen-coins-message">Please choose coins to follow in the report...
+        </div>
+
+        <div id="chart-container" style="height: 370px; width: 100%;"></div>
+      </div>
 
 
-    <div id="about-main-content" class="container about-main-content">
-      <h2>About Me</h2>
+      <div id="about-main-content" class="container about-main-content">
+        <h2>About Me</h2>
 
-      <div class="row menu">
-        <div class="accordion bg-transparent " id="about-accordion">
-          <div class="accordion-item bg-transparent text-white">
-            <h2 class="accordion-header">
-              <button class="accordion-button bg-transparent text-white nav-box" type="button" data-bs-toggle="collapse"
-                data-bs-target="#what-is-crypto-collapse" aria-expanded="true" aria-controls="collapseOne">
-                What is Crypto?
-              </button>
-            </h2>
-            <div id="what-is-crypto-collapse" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-              <div class="accordion-body bg-black  text-white collaps-item">
-                Cryptocurrency is a digital or virtual currency that operates on distributed ledger technology called
-                a blockchain and uses cryptography for security. It is decentralized and operates independently of a
-                central bank.<br>
-                Unlike traditional currencies, cryptocurrencies are not backed by a physical commodity or government,
-                and their value is determined by market demand and supply. Cryptocurrencies can be used to buy goods
-                and services, transfer funds, and trade in markets. Popular cryptocurrencies include Bitcoin,
-                Ethereum, Litecoin, Ripple, and Cronos.<br>
-                Many cryptocurrencies, like Bitcoin, are created through a process called mining, which involves
-                solving complex mathematical equations to validate and record transactions on a blockchain. This
-                mechanism is also called Proof of Work (PoW). Another consensus mechanism that has increased in
-                popularity — as it is more energy efficient — is Proof of Stake (PoS). Instead of mining, PoS relies
-                on network participants validating transactions. Ethereum, the second-largest cryptocurrency, uses
-                this consensus mechanism.<br>
+        <div class="row menu">
+          <div class="accordion bg-transparent " id="about-accordion">
+            <div class="accordion-item bg-transparent text-white">
+              <h2 class="accordion-header">
+                <button class="accordion-button bg-transparent text-white nav-box" type="button"
+                  data-bs-toggle="collapse" data-bs-target="#what-is-crypto-collapse" aria-expanded="true"
+                  aria-controls="collapseOne">
+                  What is Crypto?
+                </button>
+              </h2>
+              <div id="what-is-crypto-collapse" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div class="accordion-body bg-black  text-white collaps-item">
+                  Cryptocurrency is a digital or virtual currency that operates on distributed ledger technology called
+                  a blockchain and uses cryptography for security. It is decentralized and operates independently of a
+                  central bank.<br>
+                  Unlike traditional currencies, cryptocurrencies are not backed by a physical commodity or government,
+                  and their value is determined by market demand and supply. Cryptocurrencies can be used to buy goods
+                  and services, transfer funds, and trade in markets. Popular cryptocurrencies include Bitcoin,
+                  Ethereum, Litecoin, Ripple, and Cronos.<br>
+                  Many cryptocurrencies, like Bitcoin, are created through a process called mining, which involves
+                  solving complex mathematical equations to validate and record transactions on a blockchain. This
+                  mechanism is also called Proof of Work (PoW). Another consensus mechanism that has increased in
+                  popularity — as it is more energy efficient — is Proof of Stake (PoS). Instead of mining, PoS relies
+                  on network participants validating transactions. Ethereum, the second-largest cryptocurrency, uses
+                  this consensus mechanism.<br>
 
 
+                </div>
               </div>
             </div>
-          </div>
-          <div class="accordion-item bg-transparent text-white">
-            <h2 class="accordion-header">
-              <button class="accordion-button collapsed bg-transparent text-white nav-box" type="button"
-                data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
-                aria-controls="collapseTwo">
-                What is Bitcoin?
-              </button>
-            </h2>
-            <div id="collapseTwo" class="accordion-collapse collapse bg-transparent" data-bs-parent="#accordionExample">
-              <div class="accordion-body bg-black collaps-item">
-                Bitcoin is a cryptocurrency that operates on a peer-to-peer (P2P) network. It was created in 2009 by
-                an unknown person or group using the pseudonym Satoshi Nakamoto. Bitcoin is the first and most
-                well-known cryptocurrency, and it has gained significant popularity and value since its creation.<br>
-                Unlike traditional fiat currency, which is controlled by central banks and governments, Bitcoin
-                operates independently of any central authority. Transactions are verified and recorded on the
-                blockchain, which is a distributed ledger that maintains a permanent and transparent record of all
-                transactions.<br>
-                Bitcoin can be bought, sold, and exchanged on various cryptocurrency exchanges, and it can be used to
-                purchase goods and services from merchants that accept Bitcoin as a form of payment. The supply of
-                bitcoins is limited to 21 million units, and new bitcoins are created through mining, which involves
-                using specialized computer hardware to solve complex mathematical equations.<br>
-                Bitcoin is known for its high volatility, and its value can fluctuate rapidly in response to market
-                conditions, news events, and other factors. Many traders, including institutional investors, see
-                Bitcoin as a store of value and a way to participate in the growing cryptocurrency ecosystem.<br>
+            <div class="accordion-item bg-transparent text-white">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed bg-transparent text-white nav-box" type="button"
+                  data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
+                  aria-controls="collapseTwo">
+                  What is Bitcoin?
+                </button>
+              </h2>
+              <div id="collapseTwo" class="accordion-collapse collapse bg-transparent"
+                data-bs-parent="#accordionExample">
+                <div class="accordion-body bg-black collaps-item">
+                  Bitcoin is a cryptocurrency that operates on a peer-to-peer (P2P) network. It was created in 2009 by
+                  an unknown person or group using the pseudonym Satoshi Nakamoto. Bitcoin is the first and most
+                  well-known cryptocurrency, and it has gained significant popularity and value since its creation.<br>
+                  Unlike traditional fiat currency, which is controlled by central banks and governments, Bitcoin
+                  operates independently of any central authority. Transactions are verified and recorded on the
+                  blockchain, which is a distributed ledger that maintains a permanent and transparent record of all
+                  transactions.<br>
+                  Bitcoin can be bought, sold, and exchanged on various cryptocurrency exchanges, and it can be used to
+                  purchase goods and services from merchants that accept Bitcoin as a form of payment. The supply of
+                  bitcoins is limited to 21 million units, and new bitcoins are created through mining, which involves
+                  using specialized computer hardware to solve complex mathematical equations.<br>
+                  Bitcoin is known for its high volatility, and its value can fluctuate rapidly in response to market
+                  conditions, news events, and other factors. Many traders, including institutional investors, see
+                  Bitcoin as a store of value and a way to participate in the growing cryptocurrency ecosystem.<br>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="accordion-item bg-transparent text-white">
-            <h2 class="accordion-header">
-              <button class="accordion-button collapsed bg-transparent text-white nav-box" type="button"
-                data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false"
-                aria-controls="collapseThree">
-                Where to buy Crypto?
-              </button>
-            </h2>
-            <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-              <div class="accordion-body bg-black collaps-item">
-                There are several ways to buy cryptocurrencies, including:<br>
-                Brokerage services: Crypto brokers allow users to simply buy and sell cryptocurrencies. A popular
-                example is the Crypto.com App, trusted by over 80 million users. It is available at the Apple Store
-                and on Google Play.<br>
-                Cryptocurrency exchanges: These are online platforms where users can buy, sell, and trade
-                cryptocurrencies using fiat currency or other cryptocurrencies. They offer more complex functions
-                compared to a crypto brokerage, adding trading instruments like crypto derivatives. The Crypto.com
-                Exchange is an example of a popular crypto exchange.<br>
-                Peer-to-peer (P2P) marketplaces: These are platforms where buyers and sellers can directly trade
-                cryptocurrencies without the involvement of a third-party exchange. This is also known as DeFi, short
-                for decentralized finance. Multiple P2P crypto marketplaces can be accessed all in one app via the
-                Crypto.com DeFi Wallet.<br>
-                It is important to perform proper research and choose a reputable platform to buy cryptocurrencies.
-                For instance, Crypto.com holds the highest security rating in the industry. In addition, it is
-                advisable to store cryptocurrencies securely in a wallet like the Crypto.com App or Crypto.com DeFi
-                Wallet<br>
+            <div class="accordion-item bg-transparent text-white">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed bg-transparent text-white nav-box" type="button"
+                  data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false"
+                  aria-controls="collapseThree">
+                  Where to buy Crypto?
+                </button>
+              </h2>
+              <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div class="accordion-body bg-black collaps-item">
+                  There are several ways to buy cryptocurrencies, including:<br>
+                  Brokerage services: Crypto brokers allow users to simply buy and sell cryptocurrencies. A popular
+                  example is the Crypto.com App, trusted by over 80 million users. It is available at the Apple Store
+                  and on Google Play.<br>
+                  Cryptocurrency exchanges: These are online platforms where users can buy, sell, and trade
+                  cryptocurrencies using fiat currency or other cryptocurrencies. They offer more complex functions
+                  compared to a crypto brokerage, adding trading instruments like crypto derivatives. The Crypto.com
+                  Exchange is an example of a popular crypto exchange.<br>
+                  Peer-to-peer (P2P) marketplaces: These are platforms where buyers and sellers can directly trade
+                  cryptocurrencies without the involvement of a third-party exchange. This is also known as DeFi, short
+                  for decentralized finance. Multiple P2P crypto marketplaces can be accessed all in one app via the
+                  Crypto.com DeFi Wallet.<br>
+                  It is important to perform proper research and choose a reputable platform to buy cryptocurrencies.
+                  For instance, Crypto.com holds the highest security rating in the industry. In addition, it is
+                  advisable to store cryptocurrencies securely in a wallet like the Crypto.com App or Crypto.com DeFi
+                  Wallet<br>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="accordion-item bg-transparent text-white">
-            <h2 class="accordion-header">
-              <button class="accordion-button collapsed bg-transparent text-white nav-box" type="button"
-                data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false"
-                aria-controls="collapseFour">
-                Who are we?
-              </button>
-            </h2>
-            <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-              <div class="accordion-body bg-black bg-opacity-75">
-                My name is Livi Lamed. Born and raised in Jerusalem, have been living in the city of Tel Aviv in the
-                last 10 years. <br>
-                I am a drama writer, create content for TV and theatre. <br>
-                I run and own an online Ulpan for Hebrew.<br>
-                Nowadays I also create and design applications and websites as a frontend engineer.<br>
+            <div class="accordion-item bg-transparent text-white">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed bg-transparent text-white nav-box" type="button"
+                  data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false"
+                  aria-controls="collapseFour">
+                  Who are we?
+                </button>
+              </h2>
+              <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div class="accordion-body bg-black bg-opacity-75">
+                  My name is Livi Lamed. Born and raised in Jerusalem, have been living in the city of Tel Aviv in the
+                  last 10 years. <br>
+                  I am a drama writer, create content for TV and theatre. <br>
+                  I run and own an online Ulpan for Hebrew.<br>
+                  Nowadays I also create and design applications and websites as a frontend engineer.<br>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="accordion-item bg-transparent text-white">
-            <h2 class="accordion-header">
-              <button class="accordion-button collapsed bg-transparent text-white nav-box" type="button"
-                data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false"
-                aria-controls="collapseFour">
-                Contact us
-              </button>
-            </h2>
-            <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-              <div class="accordion-body bg-black bg-opacity-75">
-                <form action="submit" class="container form-body container space-between">
-                  <div class="form-floating mb-3">
-                    <input type="text" class="form-control form-object" id="floatingInput" placeholder="Livi Lamed">
-                    <label class="form-object" for="floatingInput">Full Name</label>
-                  </div>
-                  <div class="form-floating">
-                    <div class="input-group">
-                      <span class="input-group-text">+972</span>
-                      <input type="number" class="form-control form-object" id="phone" placeholder="055-555-5555"
-                        pattern="{3,3,4}" required>
+            <div class="accordion-item bg-transparent text-white">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed bg-transparent text-white nav-box" type="button"
+                  data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false"
+                  aria-controls="collapseFour">
+                  Contact us
+                </button>
+              </h2>
+              <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div class="accordion-body bg-black bg-opacity-75">
+                  <form action="submit" class="container form-body container space-between">
+                    <div class="form-floating mb-3">
+                      <input type="text" class="form-control form-object" id="floatingInput" placeholder="Livi Lamed">
+                      <label class="form-object" for="floatingInput">Full Name</label>
                     </div>
-                    <div class="form-text form-object" id="reason"></div>
-                  </div>
+                    <div class="form-floating">
+                      <div class="input-group">
+                        <span class="input-group-text">+972</span>
+                        <input type="number" class="form-control form-object" id="phone" placeholder="055-555-5555"
+                          pattern="{3,3,4}" required>
+                      </div>
+                      <div class="form-text form-object" id="reason"></div>
+                    </div>
 
-                  <div class="form-floating mb-3">
-                    <input type="email" class="form-control form-object" id="floatingEmail"
-                      placeholder="LiviLamed@example.com">
-                    <label for="floatingInput" class="form-object">Email address</label>
-                  </div>
-                  <div class="form-floating">
-                    <textarea class="form-control form-object" placeholder="Leave a comment here" id="floatingTextarea2"
-                      style="height: 100px"></textarea>
-                    <label for="floatingTextarea2">Write us...</label>
-                    <button class="btn submit-btn" type="submit">Send</button>
-                  </div>
-                </form>
+                    <div class="form-floating mb-3">
+                      <input type="email" class="form-control form-object" id="floatingEmail"
+                        placeholder="LiviLamed@example.com">
+                      <label for="floatingInput" class="form-object">Email address</label>
+                    </div>
+                    <div class="form-floating">
+                      <textarea class="form-control form-object" placeholder="Leave a comment here"
+                        id="floatingTextarea2" style="height: 100px"></textarea>
+                      <label for="floatingTextarea2">Write us...</label>
+                      <button class="btn submit-btn" type="submit">Send</button>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
