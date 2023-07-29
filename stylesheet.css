@@ -163,7 +163,7 @@ button {
 
 .search-bar {
     background: rgba(214, 211, 211, 0.873);
-    font-weight: bolder;
+    font-weight: 900;
     position: absolute;
     max-width: 130px;
     right: 25%;

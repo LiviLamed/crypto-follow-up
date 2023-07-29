@@ -35,6 +35,7 @@ searchInput.addEventListener("input", (e) => {
     } else {
         coinsToDisplay = allCoins
     }
+    displayCurrencies()
     displayCoins()
 })
 
