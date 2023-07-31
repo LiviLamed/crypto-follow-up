@@ -161,21 +161,29 @@ button {
     background-color: #000000;
 }
 
+
+input {
+    padding: 4px;
+}
+
 .search-bar {
     background: rgba(214, 211, 211, 0.873);
-    font-weight: 900;
     position: absolute;
     max-width: 130px;
     right: 25%;
-    top: 30px;
+    top: 20px;
     border-top-left-radius: 9rem 10rem;
     border-top-right-radius: 1rem 1rem;
     border-bottom-left-radius: 0.8rem 1rem;
     border-bottom-right-radius: 10rem 7rem;
     filter: drop-shadow(0 0 3px black);
-    padding-left: 20px;
+    padding: 8px;
     font-weight: bolder;
     z-index: 3;
+    padding-left: 25px;
+    font-size: 16px;
+    font-weight:lighter;
+
 
 
 }
@@ -503,3 +511,4 @@ input {
     right: 30px;
     z-index: 3;
 }
+

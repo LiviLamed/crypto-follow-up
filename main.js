@@ -23,6 +23,25 @@ let intervalId;
 let coinsData = []
 let chart;
 
+window.addEventListener('scroll', reveal)
+
+function reveal() {
+    const reveals = document.querySelectorAll('.reveal');
+
+    for(const i = 0; i < reveals.length; i++) {
+        const windowHeight = window.innerHeight;
+        const revealTop = reveals[i].getBoundingClientRect().top;
+        const revealPoint = 300;
+
+        if(revealTop < windowHeight - revealPoint) {
+            reveals[i].classList.add('active')
+        } else {
+            reveals[i].classList.remove('active')
+
+        }
+    }
+}
+
 init()
 
 searchInput.addEventListener("input", (e) => {
@@ -113,15 +132,15 @@ function displayAbout() {
 
 async function getCoins(currency) {
     try {
-        // const url = new URL('https://api.coingecko.com/api/v3/coins/markets')
-        // url.searchParams.append('vs_currency', `${currency}`)
-        // url.searchParams.append('order', 'market_cap_desc')
-        // // changed to 50 coins in the query parameter
-        // url.searchParams.append('per_page', '50')
-        // url.searchParams.append('page', '1')
+        const url = new URL('https://api.coingecko.com/api/v3/coins/markets')
+        url.searchParams.append('vs_currency', `${currency}`)
+        url.searchParams.append('order', 'market_cap_desc')
+        // changed to 50 coins in the query parameter
+        url.searchParams.append('per_page', '50')
+        url.searchParams.append('page', '1')
 
         //for test purposes you may use data.json attached to this file -using this URL instead of the url above
-        const url = new URL('/assets/data.json', window.origin)
+        // const url = new URL('/assets/data.json', window.origin)
         const response = await fetch(url);
         const coins = await response.json();
         return coins;
@@ -167,51 +186,51 @@ async function displayCoins() {
 
 
                 html += `
-            <div class="col-lg-2 col-md-3 col-sm-6 col-12">   
-            <div class="card" id="card-${coin.id}">
-                <img src="${coin.image}" class="card-img-top coin-card-image" alt="${coin.image}">
-                <div class="form-check form-switch">
-                    <input class="form-check-input follow-coin-in-report-switch" type="checkbox" onclick="updateChosenCoins(allSwitchButtons)" role="switch" id="${coin.id}" name="${coin.id}">
-                </div>
-                <div class="card-body">
-                <h5 class="card-symbol">${coin.symbol}</h5>
-                <h6 class="card-title">${coin.name}</h6>
-                
-                <p>
-                    <button onclick="getCoinInfo('${coin.id}', this)" class=" more-info-btn" type="button" data-bs-toggle="collapse" data-bs-target="#coin-collapse-${coin.id}" aria-expanded="false" aria-controls="collapseExample">
-                    More Info
-                    </button>
-                </p>
-                <div class="collapse card-collapse" id="coin-collapse-${coin.id}">
-                
-                    <div class=" card-body">
-                    <table>
+                <div class="col-lg-2 col-md-3 col-sm-6 col-12">   
+                    <div class="card reveal" id="card-${coin.id}">
+                        <img src="${coin.image}" class="card-img-top coin-card-image" alt="${coin.image}">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input follow-coin-in-report-switch" type="checkbox" onclick="updateChosenCoins(allSwitchButtons)" role="switch" id="${coin.id}" name="${coin.id}">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-symbol">${coin.symbol}</h5>
+                            <h6 class="card-title">${coin.name}</h6>
                         
+                            <p>
+                                <button onclick="getCoinInfo('${coin.id}', this)" class=" more-info-btn" type="button" data-bs-toggle="collapse" data-bs-target="#coin-collapse-${coin.id}" aria-expanded="false" aria-controls="collapseExample">
+                                More Info
+                                </button>
+                            </p>
+                            <div class="collapse card-collapse" id="coin-collapse-${coin.id}">
                         
-                        <tbody>
-                            <tr table-primary>
-                                 <th id="card-info-dollar" class="table-primary dollar-th">$</th>
-                                 <td id="coin-usd-price-${coin.id}"></td>
+                                <div class="card-body">
+                                    <table>
+                                        
+                                        
+                                        <tbody>
+                                            <tr table-primary>
+                                                <th id="card-info-dollar" class="table-primary dollar-th">$</th>
+                                                <td id="coin-usd-price-${coin.id}"></td>
 
-                            </tr>
+                                            </tr>
 
-                            <tr table-primary>
-                                <th id="card-info-shekel">₪</th>
-                                <td id="coin-ils-price-${coin.id}"></td>
-                            </tr>
+                                            <tr table-primary>
+                                                <th id="card-info-shekel">₪</th>
+                                                <td id="coin-ils-price-${coin.id}"></td>
+                                            </tr>
 
-                            <tr table-primary>
-                                <th id="card-info-euro">€</th>
-                                <td id="coin-eur-price-${coin.id}"></td>                         
-                             </tr>
-                        </tbody>
+                                            <tr table-primary>
+                                                <th id="card-info-euro">€</th>
+                                                <td id="coin-eur-price-${coin.id}"></td>                         
+                                            </tr>
+                                        </tbody>
 
-                    </table>
-                    </div>
-                </div>
-                </div>
-            </div>
-        </div>        
+                                    </table>
+                                </div>
+                                </div>
+                            </div>
+                     </div>
+                </div>        
         `
             }
             cardsContainer.innerHTML = html;
