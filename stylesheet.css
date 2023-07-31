@@ -28,17 +28,18 @@ html {
 ::-webkit-scrollbar {
     background-color: rgb(0, 136, 141);
     filter: drop-shadow(0 0 5px gold);
-
+    width: 3px;
     border: 7px solid black;
     width: 20px;
 }
 
 ::-webkit-scrollbar-thumb {
     background-color: transparent;
-    border: 5px solid gold;
-    filter: drop-shadow(0 0 5px gold);
-    border-radius: 6px;
-    width: 6px;
+    border: 2px solid gold;
+    filter: drop-shadow(0 0 5px rgb(32, 28, 7));
+    border-radius: 10px;
+    width: 3.1px;
+
 
 }
 
