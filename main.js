@@ -25,6 +25,11 @@ let chart;
 
 window.addEventListener('scroll', reveal)
 
+$('#coins-limitation-dialog').modal({
+    backdrop: 'static',
+    keyboard: false
+})
+
 function reveal() {
     const reveals = document.querySelectorAll('.reveal');
 

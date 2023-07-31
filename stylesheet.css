@@ -512,3 +512,11 @@ input {
     z-index: 3;
 }
 
+.switch-in-modal {
+    position: absolute;
+    bottom: 40px;
+    right: 20%;
+    scale: 1.8;
+    
+}
+
