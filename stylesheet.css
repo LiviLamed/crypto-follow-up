@@ -94,7 +94,7 @@ html {
 
 .page-main-content::before {
     /* background-image: url('/assets/images/teal-blk-bg-dark.jpg'); */
-    background-image: url('https://www.pinterest.com/pin/1407443618899637/');
+    background-image: url('https://i.pinimg.com/originals/f4/04/03/f40403cdd7ff02dc740eb85285ae8def.jpg');
 
     content: ' ';
     display: block;
