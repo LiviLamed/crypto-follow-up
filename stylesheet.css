@@ -93,7 +93,8 @@ html {
 }
 
 .page-main-content::before {
-    background-image: url('/assets/images/teal-blk-bg-dark.jpg');
+    /* background-image: url('/assets/images/teal-blk-bg-dark.jpg'); */
+    background-image: url('https://www.pinterest.com/pin/1407443618899637/');
 
     content: ' ';
     display: block;
