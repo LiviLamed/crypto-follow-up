@@ -278,6 +278,7 @@ function showDialog() {
     $('#coins-limitation-dialog').modal('show')
 }
 
+
 function displayCoinsInModal() {
     let html = ''
     for (const coin of chosenCoins) {
@@ -285,8 +286,8 @@ function displayCoinsInModal() {
         <div class="col-lg-2 col-md-3 col-sm-6 col-12">   
             <div class="card">
                 <img src="${coin.image}" class="card-img-top coin-card-image" alt="${coin.image}">
-                <div class="form-check form-switch">
-                    <input class="form-check-input coin-in-modal" type="checkbox" checked onclick="updateChosenCoins(allModalSwitches)" role="switch" id="${coin.id}" name="${coin.id}">
+                <div class="form-check form-switch ">
+                    <input class="form-check-input switch-in-modal coin-in-modal" type="checkbox" checked onclick="updateChosenCoins(allModalSwitches)" role="switch" id="${coin.id}" name="${coin.id}">
                 </div>
                 <div class="card-body">
                 <h5 class="card-title">${coin.symbol}</h5>
@@ -296,8 +297,7 @@ function displayCoinsInModal() {
   
         </div>`
     }
-    html += `<button type="button" class="btn btn-info" onclick="goToReportFromModal()">Go To Report</button>    `
-    html += `<button type="button" class="btn btn-info" onclick="closeModal()">Cancel</button>    `
+     
     modalBody.innerHTML = html;
 }
 
