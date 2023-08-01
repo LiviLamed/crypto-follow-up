@@ -234,6 +234,8 @@ input {
     cursor: pointer;
     z-index: 1;
 
+    min-height: 0;
+    height: 100px;
 }
 
 .card {
@@ -525,4 +527,3 @@ input {
     scale: 1.8;
     
 }
-

@@ -137,15 +137,15 @@ function displayAbout() {
 
 async function getCoins(currency) {
     try {
-        // const url = new URL('https://api.coingecko.com/api/v3/coins/markets')
-        // url.searchParams.append('vs_currency', `${currency}`)
-        // url.searchParams.append('order', 'market_cap_desc')
-        // // changed to 50 coins in the query parameter
-        // url.searchParams.append('per_page', '50')
-        // url.searchParams.append('page', '1')
+        const url = new URL('https://api.coingecko.com/api/v3/coins/markets')
+        url.searchParams.append('vs_currency', `${currency}`)
+        url.searchParams.append('order', 'market_cap_desc')
+        // changed to 50 coins in the query parameter
+        url.searchParams.append('per_page', '50')
+        url.searchParams.append('page', '1')
 
         //for test purposes you may use data.json attached to this file -using this URL instead of the url above
-        const url = new URL('./assets/data.json', window.origin)
+        // const url = new URL('./assets/data.json', window.origin)
         const response = await fetch(url);
         const coins = await response.json();
         return coins;
@@ -289,7 +289,7 @@ function displayCoinsInModal() {
     for (const coin of chosenCoins) {
         html += `
         <div class="col-lg-2 col-md-3 col-sm-6 col-12">   
-            <div class="card">
+            <div class="modal-card card">
                 <img src="${coin.image}" class="card-img-top coin-card-image" alt="${coin.image}">
                 <div class="form-check form-switch ">
                     <input class="form-check-input switch-in-modal coin-in-modal" type="checkbox" checked onclick="updateChosenCoins(allModalSwitches)" role="switch" id="${coin.id}" name="${coin.id}">
