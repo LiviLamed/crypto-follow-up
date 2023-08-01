@@ -411,7 +411,6 @@ async function updateChart() {
     }
 }
 
-console.log(allCards)
 
 const handleMouseMove = e => {
     const { currentTarget: target } = e;
