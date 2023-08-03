@@ -373,6 +373,8 @@ function goToReportFromModal() {
     }
 }
 
+let coinData;
+
 function displayChart() {
     if (chart) {
         coinsData = []
@@ -380,7 +382,7 @@ function displayChart() {
         chart = null;
     }
     for (const coin of chosenCoins) {
-        const coinData = {
+            coinData = {
             name: coin.name,
             id: coin.id,
             type: "spline",
@@ -445,13 +447,16 @@ async function updateChart() {
 
             const coinData = coinsData.find((data) => data.id === coin.id)
             coinData.dataPoints.push({ x: new Date(), y: coin.current_price })
+
         }
 
-
-        //TTl = 20 seconds. chart shows 10 data points replaced every 2 sec
-        if (coinsData.length > 10) {
+        if (coinData.dataPoints.length > 10) {
             coinsData.shift()
         }
+        console.log(coinsData)
+        console.log(coinData)
+        //TTl = 20 seconds. chart shows 10 data points replaced every 2 sec
+        
 
         chart.render()
 
@@ -475,4 +480,15 @@ const handleMouseMove = e => {
 for (const card of allCards) {
     card.onmousemove = e => handleMouseMove(e);
 }
+function submitForm() {
+    event.preventDefault()
+    const nameBox = document.getElementById('name-input')
+    const phoneBox = document.getElementById('phone-input')
+    const emailBox = document.getElementById('email-input')
+    const reasonBox = document.getElementById('reason-input')
 
+    nameBox.value = ''
+    phoneBox.value = ''
+    emailBox.value = ''
+    reasonBox.value = ''
+}

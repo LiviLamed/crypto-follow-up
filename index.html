@@ -197,30 +197,29 @@
               </h2>
               <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <div class="accordion-body bg-black bg-opacity-75">
-                  <form action="submit" class="container form-body container space-between">
+                  <form action="submit" class="container form-body container space-between" id="contact-us-form">
                     <div class="form-floating mb-3">
-                      <input type="text" class="form-control form-object" id="floatingInput" placeholder="Livi Lamed">
-                      <label class="form-object" for="floatingInput">Full Name</label>
+                      <input type="text" class="form-control form-object" id="name-input" placeholder="Livi Lamed">
+                      <label class="form-object" for="name-input">Full Name</label>
                     </div>
                     <div class="form-floating">
                       <div class="input-group">
                         <span class="input-group-text">+972</span>
-                        <input type="number" class="form-control form-object" id="phone" placeholder="055-555-5555"
-                          pattern="{3,3,4}" required>
+                        <input type="tel" class="form-control form-object" id="phone-input" placeholder="055-555-5555" pattern="{3,3,4}" required>
                       </div>
-                      <div class="form-text form-object" id="reason"></div>
+                      <div class="form-text form-object" id=""></div>
                     </div>
 
                     <div class="form-floating mb-3">
-                      <input type="email" class="form-control form-object" id="floatingEmail"
+                      <input type="email" class="form-control form-object" id="email-input"
                         placeholder="LiviLamed@example.com">
                       <label for="floatingInput" class="form-object">Email address</label>
                     </div>
                     <div class="form-floating">
                       <textarea class="form-control form-object" placeholder="Leave a comment here"
-                        id="floatingTextarea2" style="height: 100px"></textarea>
+                        id="reason-input" style="height: 100px"></textarea>
                       <label for="floatingTextarea2">Write us...</label>
-                      <button class="btn submit-btn" type="submit">Send</button>
+                      <button class="btn submit-btn" type="submit" id="submit-btn" onclick="submitForm()">Send</button>
                     </div>
                   </form>
                 </div>
