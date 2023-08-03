@@ -2,6 +2,9 @@
 
 //navBar - replace content in Main Content Div
 
+
+const COINS_INFO_KEY = "user-coins-info"
+const coinsInfo = JSON.parse(sessionStorage.getItem(COINS_INFO_KEY)) || [];
 const mainContent = document.getElementById("page-main-content")
 const currenciesMainContent = document.getElementById("currencies-main-content")
 const reportsMainContent = document.getElementById("reports-main-content")
@@ -71,7 +74,7 @@ async function init() {
         allCoins = coins;
         console.log(allCoins)
     } catch (err) {
-        console.log('Error has accured in init function:', err.stack);
+        console.log('Error has occurred in init function:', err.stack);
     } finally {
         coinsToDisplay = allCoins;
         dynamicNavBar()
@@ -153,12 +156,9 @@ async function getCoins(currency) {
         const coins = await response.json();
         return coins;
     } catch (err) {
-        console.log('Error has accured in getCoins function:', err.stack);
+        console.log('Error has occurred in getCoins function:', err.stack);
     }
 }
-
-const COINS_INFO_KEY = "user-coins-info"
-const coinsInfo = JSON.parse(sessionStorage.getItem(COINS_INFO_KEY)) || [];
 
 
 function saveToSessionStorage() {
@@ -235,7 +235,7 @@ async function getCoinInfo(coinId, btnElement) {
         coinPriceContainerEur.innerHTML = coinPriceEur.toFixed(2);
 
     } catch (err) {
-        console.log('Error has accured in getCoinInfo function:', err.stack);
+        console.log('Error has occurred in getCoinInfo function:', err.stack);
     }
 
 }
