@@ -172,21 +172,11 @@ async function getCoinInfo(coinId, btnElement) {
         $(btnElement).closest('.card').toggleClass('open-card')
 
         if(!$(btnElement).closest('.card').hasClass('open-card')) {
-            // console.log('card closed')
+            // card closed
             return 
         }
 
-    //     const collapse = document.getElementById(`coin-collapse-${coinId}`)
-    //     console.log(collapse)
-    //     console.log(collapse.classList)
-    //    if( $(collapse).hasClass('show')) {
-    //     console.log('card closed')
-    //    }
-
-
-        // if(!collapse.classList.contains('show')) {
-        //     console.log('card closed')
-        // }
+    
         let coinPriceUsd;
         let coinPriceIls;
         let coinPriceEur;
@@ -196,7 +186,7 @@ async function getCoinInfo(coinId, btnElement) {
         })
 
         if(!isExistInStorage) {
-            // console.log('api requested')
+            //fetch url is sent
             const url = new URL(`https://api.coingecko.com/api/v3/coins/${coinId}`)
             const response = await fetch(url)
             const coinInfo = await response.json()
@@ -210,7 +200,7 @@ async function getCoinInfo(coinId, btnElement) {
             
 
         } else {
-            // console.log('took information from session storage')
+            // take information from session storage
 
             const coinInfo = coinsInfo.find((coin) => {
                 return coin.id === coinId
