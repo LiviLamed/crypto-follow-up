@@ -30,6 +30,8 @@ $('#coins-limitation-dialog').modal({
     keyboard: false
 })
 
+
+
 function reveal() {
     const reveals = document.querySelectorAll('.reveal');
 
@@ -67,6 +69,7 @@ async function init() {
     try {
         const coins = await getCoins('usd')
         allCoins = coins;
+        console.log(allCoins)
     } catch (err) {
         console.log('Error has accured in init function:', err.stack);
     } finally {
@@ -154,15 +157,75 @@ async function getCoins(currency) {
     }
 }
 
+const COINS_INFO_KEY = "user-coins-info"
+const coinsInfo = JSON.parse(sessionStorage.getItem(COINS_INFO_KEY)) || [];
+
+
+function saveToSessionStorage() {
+    sessionStorage.setItem(COINS_INFO_KEY, JSON.stringify(coinsInfo));
+
+}
+
+
 async function getCoinInfo(coinId, btnElement) {
     try {
-        const url = new URL(`https://api.coingecko.com/api/v3/coins/${coinId}`)
-        const response = await fetch(url)
-        const coinInfo = await response.json()
-        const coinPriceUsd = coinInfo.market_data.current_price.usd;
-        const coinPriceIls = coinInfo.market_data.current_price.ils;
-        const coinPriceEur = coinInfo.market_data.current_price.eur;
+        $(btnElement).closest('.card').toggleClass('open-card')
 
+        if(!$(btnElement).closest('.card').hasClass('open-card')) {
+            // console.log('card closed')
+            return 
+        }
+
+    //     const collapse = document.getElementById(`coin-collapse-${coinId}`)
+    //     console.log(collapse)
+    //     console.log(collapse.classList)
+    //    if( $(collapse).hasClass('show')) {
+    //     console.log('card closed')
+    //    }
+
+
+        // if(!collapse.classList.contains('show')) {
+        //     console.log('card closed')
+        // }
+        let coinPriceUsd;
+        let coinPriceIls;
+        let coinPriceEur;
+
+        const isExistInStorage = coinsInfo.some((coin) => {
+            return coin.id === coinId;
+        })
+
+        if(!isExistInStorage) {
+            // console.log('api requested')
+            const url = new URL(`https://api.coingecko.com/api/v3/coins/${coinId}`)
+            const response = await fetch(url)
+            const coinInfo = await response.json()
+            coinsInfo.push(coinInfo);
+            saveToSessionStorage()
+
+            coinPriceUsd = coinInfo.market_data.current_price.usd;
+            coinPriceIls = coinInfo.market_data.current_price.ils;
+            coinPriceEur = coinInfo.market_data.current_price.eur;
+
+            
+
+        } else {
+            // console.log('took information from session storage')
+
+            const coinInfo = coinsInfo.find((coin) => {
+                return coin.id === coinId
+            })
+            coinPriceUsd = coinInfo.market_data.current_price.usd;
+            coinPriceIls = coinInfo.market_data.current_price.ils;
+            coinPriceEur = coinInfo.market_data.current_price.eur;
+
+        }
+        // sessionStorage.setItem(NOTES_KEY, JSON.stringify(coinInfo));
+
+        // console.log("coinsInfo: ",coinsInfo)
+        
+
+        
         const coinPriceContainerUsd = document.getElementById(`coin-usd-price-${coinId}`)
         const coinPriceContainerIls = document.getElementById(`coin-ils-price-${coinId}`)
         const coinPriceContainerEur = document.getElementById(`coin-eur-price-${coinId}`)
@@ -171,7 +234,6 @@ async function getCoinInfo(coinId, btnElement) {
         coinPriceContainerIls.innerHTML = coinPriceIls.toFixed(2);
         coinPriceContainerEur.innerHTML = coinPriceEur.toFixed(2);
 
-        $(btnElement).closest('.card').toggleClass('open-card')
     } catch (err) {
         console.log('Error has accured in getCoinInfo function:', err.stack);
     }
@@ -389,11 +451,6 @@ async function updateChart() {
                 return coin.id === chosenCoin.id
             })
         })
-
-
-    } catch (err) {
-        console.log('Error has accrued in updateChart function:', err.stack);
-    } finally {
         for (const coin of chosenCoins) {
 
             const coinData = coinsData.find((data) => data.id === coin.id)
@@ -408,7 +465,10 @@ async function updateChart() {
 
         chart.render()
 
-    }
+
+    } catch (err) {
+        console.log('Error has accrued in updateChart function:', err.stack);
+    } 
 }
 
 
