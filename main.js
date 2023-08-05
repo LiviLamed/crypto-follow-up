@@ -19,6 +19,10 @@ const allCards = document.getElementsByClassName('card')
 const parallaxSection = document.getElementById('parallax-section')
 const scroller = document.getElementById('scroller')
 
+const currenciesLink = document.getElementById("currencies-link");
+const reportsLink = document.getElementById("reports-link");
+const aboutLink = document.getElementById("about-link");
+
 
 let allCoins = []
 let coinsToDisplay = []
@@ -27,7 +31,6 @@ let intervalId;
 let coinsData = []
 let chart;
 
-window.addEventListener('scroll', reveal)
 
 $('#coins-limitation-dialog').modal({
     backdrop: 'static',
@@ -36,22 +39,22 @@ $('#coins-limitation-dialog').modal({
 
 
 
-function reveal() {
-    const reveals = document.querySelectorAll('.reveal');
+// function reveal() {
+//     const reveals = document.querySelectorAll('.reveal');
 
-    for (const i = 0; i < reveals.length; i++) {
-        const windowHeight = window.innerHeight;
-        const revealTop = reveals[i].getBoundingClientRect().top;
-        const revealPoint = 300;
+//     for (const i = 0; i < reveals.length; i++) {
+//         const windowHeight = window.innerHeight;
+//         const revealTop = reveals[i].getBoundingClientRect().top;
+//         const revealPoint = 300;
 
-        if (revealTop < windowHeight - revealPoint) {
-            reveals[i].classList.add('active')
-        } else {
-            reveals[i].classList.remove('active')
+//         if (revealTop < windowHeight - revealPoint) {
+//             reveals[i].classList.add('active')
+//         } else {
+//             reveals[i].classList.remove('active')
 
-        }
-    }
-}
+//         }
+//     }
+// }
 
 init()
 
@@ -63,17 +66,17 @@ searchInput.addEventListener("input", (e) => {
             return coin.name.toLowerCase().includes(searchValue.toLowerCase()) || coin.symbol.toLowerCase().includes(searchValue.toLowerCase())
         })
     } else {
-        coinsToDisplay = allCoins
+        coinsToDisplay = allCoins;
     }
-    displayCurrencies()
     displayCoins()
+    displayCurrencies()
+
 })
 
 async function init() {
     try {
         const coins = await getCoins('usd')
         allCoins = coins;
-        console.log(allCoins)
     } catch (err) {
         console.log('Error has occurred in init function:', err.stack);
     } finally {
@@ -85,9 +88,6 @@ async function init() {
 
 
 function dynamicNavBar() {
-    const currenciesLink = document.getElementById("currencies-link");
-    const reportsLink = document.getElementById("reports-link");
-    const aboutLink = document.getElementById("about-link");
 
     currenciesLink.addEventListener("click", displayCurrencies);
     reportsLink.addEventListener("click", displayReports);
@@ -95,6 +95,9 @@ function dynamicNavBar() {
 }
 
 function displayCurrencies() {
+    aboutLink.classList.remove('active') 
+    reportsLink.classList.remove('active') 
+    currenciesLink.classList.add('active') 
     currenciesMainContent.style.display = 'block';
     parallaxSection.style.display = 'block'
     reportsMainContent.style.display = 'none'
@@ -107,12 +110,21 @@ function displayCurrencies() {
         intervalId = null;
     }
     for (const switchButton of allSwitchButtons) {
-        switchButton.checked = false;
+
+        if(chosenCoins.find((coin) => coin.id === switchButton.id)) {
+            switchButton.checked = true;
+
+        } else {
+            switchButton.checked = false;
+        }
     }
-    chosenCoins = []
+    // chosenCoins = []
 }
 
 function displayReports() {
+    aboutLink.classList.remove('active') 
+    reportsLink.classList.add('active') 
+    currenciesLink.classList.remove('active') 
     currenciesMainContent.style.display = 'none'
     parallaxSection.style.display = 'none'
     currenciesMainContent.style.display = 'none'
@@ -141,6 +153,9 @@ function displayReports() {
 }
 
 function displayAbout() {
+    aboutLink.classList.add('active') 
+    reportsLink.classList.remove('active') 
+    currenciesLink.classList.remove('active') 
     currenciesMainContent.style.display = 'none'
     reportsMainContent.style.display = 'none'
     aboutMainContent.style.display = 'block'
@@ -227,7 +242,6 @@ async function getCoinInfo(coinId, btnElement) {
         }
         // sessionStorage.setItem(NOTES_KEY, JSON.stringify(coinInfo));
 
-        // console.log("coinsInfo: ",coinsInfo)
 
 
 
@@ -356,7 +370,10 @@ function updateChosenCoins(switchButtons) {
 }
 
 
+let chosenCoinsBeforeModal = []
+
 function showDialog() {
+    chosenCoinsBeforeModal = chosenCoins.slice(0,5);
     $('#coins-limitation-dialog').modal('show')
 }
 
@@ -383,11 +400,12 @@ function displayCoinsInModal() {
     modalBody.innerHTML = html;
 }
 
+
+
 function closeModal() {
-    for (const switchButton of allSwitchButtons) {
-        switchButton.checked = false;
-    }
-    chosenCoins = []
+    chosenCoins = chosenCoinsBeforeModal;
+    
+    displayCurrencies()
     $('#coins-limitation-dialog').modal('hide')
 }
 
@@ -483,7 +501,6 @@ async function updateChart() {
     try {
 
         const symbolsArray = chosenCoins.map((coin) => coin.symbol)
-        console.log(symbolsArray)
 
         const updatedCoinsInfo = await getCoinsInfoForChart(symbolsArray.join())
 
@@ -493,20 +510,12 @@ async function updateChart() {
             const coinData = coinsData.find((data) => data.id === coin.id)
             coinData.dataPoints.push({ x: new Date(), y: updatedCoinsInfo[coin.symbol.toUpperCase()].USD })
 
-
+            //TTl = 20 seconds. chart shows 10 data points replaced every 2 sec
             if (coinData.dataPoints.length > 10) {
                 coinData.dataPoints.shift()
             }
         }
-
-        console.log(coinsData)
-        console.log(coinData)
-        //TTl = 20 seconds. chart shows 10 data points replaced every 2 sec
-
-
         chart.render()
-
-
     } catch (err) {
         console.log('Error has accrued in updateChart function:', err.stack);
     }
