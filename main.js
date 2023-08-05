@@ -16,7 +16,8 @@ const modalBody = document.getElementById('modal-body')
 const allModalSwitches = document.getElementsByClassName('coin-in-modal');
 const allCollapses = document.getElementsByClassName('collapse');
 const allCards = document.getElementsByClassName('card')
-
+const parallaxSection = document.getElementById('parallax-section')
+const scroller = document.getElementById('scroller')
 
 
 let allCoins = []
@@ -38,12 +39,12 @@ $('#coins-limitation-dialog').modal({
 function reveal() {
     const reveals = document.querySelectorAll('.reveal');
 
-    for(const i = 0; i < reveals.length; i++) {
+    for (const i = 0; i < reveals.length; i++) {
         const windowHeight = window.innerHeight;
         const revealTop = reveals[i].getBoundingClientRect().top;
         const revealPoint = 300;
 
-        if(revealTop < windowHeight - revealPoint) {
+        if (revealTop < windowHeight - revealPoint) {
             reveals[i].classList.add('active')
         } else {
             reveals[i].classList.remove('active')
@@ -95,8 +96,12 @@ function dynamicNavBar() {
 
 function displayCurrencies() {
     currenciesMainContent.style.display = 'block';
+    parallaxSection.style.display = 'block'
     reportsMainContent.style.display = 'none'
     aboutMainContent.style.display = 'none';
+    scroller.style.height = 'unset'
+    scroller.style.position = 'absolute'
+
     if (intervalId) {
         clearInterval(intervalId)
         intervalId = null;
@@ -109,7 +114,11 @@ function displayCurrencies() {
 
 function displayReports() {
     currenciesMainContent.style.display = 'none'
+    parallaxSection.style.display = 'none'
+    currenciesMainContent.style.display = 'none'
     reportsMainContent.style.display = 'block'
+    scroller.style.minHeight = '100vh'
+    scroller.style.position = 'static'
     aboutMainContent.style.display = 'none'
 
     const chartContainer = document.getElementById('chart-container')
@@ -135,6 +144,10 @@ function displayAbout() {
     currenciesMainContent.style.display = 'none'
     reportsMainContent.style.display = 'none'
     aboutMainContent.style.display = 'block'
+    scroller.style.minHeight = '100vh'
+    scroller.style.position = 'static'
+    parallaxSection.style.display = 'none'
+
     if (intervalId) {
         clearInterval(intervalId)
         intervalId = null;
@@ -161,6 +174,8 @@ async function getCoins(currency) {
 }
 
 
+
+
 function saveToSessionStorage() {
     sessionStorage.setItem(COINS_INFO_KEY, JSON.stringify(coinsInfo));
 
@@ -171,12 +186,12 @@ async function getCoinInfo(coinId, btnElement) {
     try {
         $(btnElement).closest('.card').toggleClass('open-card')
 
-        if(!$(btnElement).closest('.card').hasClass('open-card')) {
+        if (!$(btnElement).closest('.card').hasClass('open-card')) {
             // card closed
-            return 
+            return
         }
 
-    
+
         let coinPriceUsd;
         let coinPriceIls;
         let coinPriceEur;
@@ -185,7 +200,7 @@ async function getCoinInfo(coinId, btnElement) {
             return coin.id === coinId;
         })
 
-        if(!isExistInStorage) {
+        if (!isExistInStorage) {
             //fetch url is sent
             const url = new URL(`https://api.coingecko.com/api/v3/coins/${coinId}`)
             const response = await fetch(url)
@@ -197,7 +212,7 @@ async function getCoinInfo(coinId, btnElement) {
             coinPriceIls = coinInfo.market_data.current_price.ils;
             coinPriceEur = coinInfo.market_data.current_price.eur;
 
-            
+
 
         } else {
             // take information from session storage
@@ -213,9 +228,9 @@ async function getCoinInfo(coinId, btnElement) {
         // sessionStorage.setItem(NOTES_KEY, JSON.stringify(coinInfo));
 
         // console.log("coinsInfo: ",coinsInfo)
-        
 
-        
+
+
         const coinPriceContainerUsd = document.getElementById(`coin-usd-price-${coinId}`)
         const coinPriceContainerIls = document.getElementById(`coin-ils-price-${coinId}`)
         const coinPriceContainerEur = document.getElementById(`coin-eur-price-${coinId}`)
@@ -230,13 +245,23 @@ async function getCoinInfo(coinId, btnElement) {
 
 }
 
+const noResultsMessage = document.getElementById('no-results-message')
 
 async function displayCoins() {
     try {
         const coins = coinsToDisplay;
         if (coinsToDisplay.length === 0) {
-            cardsContainer.innerHTML = '<p id="no-results-message" class="no-results-message">No Results...</p>'
+            noResultsMessage.style.display = 'block'
+            cardsContainer.style.display = 'none'
+            scroller.style.height = '100vh'
+            scroller.style.position = 'static'
+            parallaxSection.style.display = 'none'
         } else {
+            noResultsMessage.style.display = 'none'
+            cardsContainer.style.display = 'flex'
+            scroller.style.height = 'unset'
+            scroller.style.position = 'absolute'
+
             let html = ''
 
             for (const coin of coins) {
@@ -354,7 +379,7 @@ function displayCoinsInModal() {
   
         </div>`
     }
-     
+
     modalBody.innerHTML = html;
 }
 
@@ -382,7 +407,7 @@ function displayChart() {
         chart = null;
     }
     for (const coin of chosenCoins) {
-            coinData = {
+        coinData = {
             name: coin.name,
             id: coin.id,
             type: "spline",
@@ -435,35 +460,56 @@ function displayChart() {
 
 }
 
+
+
+
+
+async function getCoinsInfoForChart(symbols) {
+    try {
+        const url = new URL('https://min-api.cryptocompare.com/data/pricemulti')
+        url.searchParams.append('fsyms', symbols)
+        url.searchParams.append('tsyms', 'USD')
+
+        const response = await fetch(url);
+        const coins = await response.json();
+        return coins;
+    } catch (err) {
+        console.log('Error has occurred in getCoins function:', err.stack);
+    }
+}
+
+
 async function updateChart() {
     try {
-        allCoins = await getCoins('usd')
-        chosenCoins = allCoins.filter((coin) => {
-            return !!chosenCoins.find((chosenCoin) => {
-                return coin.id === chosenCoin.id
-            })
-        })
+
+        const symbolsArray = chosenCoins.map((coin) => coin.symbol)
+        console.log(symbolsArray)
+
+        const updatedCoinsInfo = await getCoinsInfoForChart(symbolsArray.join())
+
+
         for (const coin of chosenCoins) {
 
             const coinData = coinsData.find((data) => data.id === coin.id)
-            coinData.dataPoints.push({ x: new Date(), y: coin.current_price })
+            coinData.dataPoints.push({ x: new Date(), y: updatedCoinsInfo[coin.symbol.toUpperCase()].USD })
 
+
+            if (coinData.dataPoints.length > 10) {
+                coinData.dataPoints.shift()
+            }
         }
 
-        if (coinData.dataPoints.length > 10) {
-            coinsData.shift()
-        }
         console.log(coinsData)
         console.log(coinData)
         //TTl = 20 seconds. chart shows 10 data points replaced every 2 sec
-        
+
 
         chart.render()
 
 
     } catch (err) {
         console.log('Error has accrued in updateChart function:', err.stack);
-    } 
+    }
 }
 
 
